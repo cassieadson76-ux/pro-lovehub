@@ -293,12 +293,6 @@
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
                     </select>
-                    <select id="lookingForFilter">
-                        <option value="all">Looking for All</option>
-                        <option value="Men">Looking for Men</option>
-                        <option value="Women">Looking for Women</option>
-                        <option value="Everyone">Looking for Everyone</option>
-                    </select>
                     <select id="statusFilter">
                         <option value="active">Active Members</option>
                         <option value="pending">Pending Members</option>
@@ -338,7 +332,6 @@
             const grid = document.getElementById('matchesGrid');
             const matchCount = document.getElementById('matchCount');
             const genderFilter = document.getElementById('genderFilter');
-            const lookingForFilter = document.getElementById('lookingForFilter');
             const statusFilter = document.getElementById('statusFilter');
 
             function escapeHtml(text) {
@@ -370,12 +363,6 @@
                     var genderValue = genderFilter.value;
                     if (genderValue !== 'all') {
                         query = query.eq('gender', genderValue);
-                    }
-
-                    // Apply looking for filter
-                    var lookingValue = lookingForFilter.value;
-                    if (lookingValue !== 'all') {
-                        query = query.eq('looking_for', lookingValue);
                     }
 
                     var result = await query;
@@ -470,7 +457,6 @@
 
             // Event listeners for filters
             genderFilter.addEventListener('change', loadMembers);
-            lookingForFilter.addEventListener('change', loadMembers);
             statusFilter.addEventListener('change', loadMembers);
 
             // Load members on page load
