@@ -357,7 +357,8 @@
 
                     if (member && member.source === 'admin') {
                         localStorage.setItem('isAdminLoggedIn', 'true');
-                        window.location.href = 'admin-panel.html';
+                        // ✅ FIXED: Redirect to adminpanel.html (no hyphen)
+                        window.location.href = 'adminpanel.html';
                     } else {
                         errorText.textContent = 'Access denied. You are not an admin.';
                         errorDiv.classList.add('show');
@@ -371,5 +372,6 @@
             });
         });
     </script>
+
 </body>
 </html>
