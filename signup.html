@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
     <style>
-        /* same as before, with cooldown */
+        /* same styles as before, with cooldown */
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Inter',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#f5f0f2; padding:20px; }
         .signup-wrapper { display:flex; max-width:1000px; width:100%; background:#fff; border-radius:32px; box-shadow:0 40px 80px rgba(26,20,35,0.12); overflow:hidden; }
@@ -74,6 +74,7 @@
         .form-footer a { color:#C2185B; font-weight:600; text-decoration:none; }
         .form-footer a:hover { text-decoration:underline; }
         .cooldown-text { font-size:13px; color:#C2185B; margin-top:8px; display:none; }
+        .cooldown-text i { margin-right:4px; }
         @media (max-width:820px) { .signup-wrapper { flex-direction:column; max-width:480px; border-radius:24px; } .signup-brand { padding:32px 28px; min-height:200px; } .signup-brand .hero-text h1 { font-size:28px; } .signup-form-panel { padding:24px 20px; max-height:none; } .signup-brand .hero-text { max-width:100%; } .form-row { grid-template-columns:1fr; } }
         @media (max-width:480px) { .signup-brand { padding:20px 16px; } .signup-form-panel { padding:16px; } .gender-group { flex-wrap:wrap; } .gender-group label { flex:1 0 30%; } .signup-brand .logo .brand { font-size:22px; } .signup-form-panel .header h2 { font-size:24px; } }
     </style>
@@ -83,6 +84,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
     <div class="signup-wrapper">
+        <!-- Left Panel -->
         <div class="signup-brand">
             <a href="index.html" class="logo">
                 <div class="icon"><i class="fas fa-heart"></i></div>
@@ -107,6 +109,7 @@
             </div>
         </div>
 
+        <!-- Right Panel -->
         <div class="signup-form-panel">
             <div class="header">
                 <h2>Create <span class="highlight">Account</span></h2>
@@ -234,7 +237,7 @@
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${seconds}s`;
                 cooldownText.style.display = 'block';
-                cooldownText.textContent = `⏳ Please wait ${seconds} seconds before trying again.`;
+                cooldownText.innerHTML = `<i class="fas fa-hourglass-half"></i> Please wait ${seconds} seconds before trying again.`;
                 const interval = setInterval(() => {
                     seconds--;
                     if (seconds <= 0) {
@@ -244,7 +247,7 @@
                         cooldownText.style.display = 'none';
                     } else {
                         submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${seconds}s`;
-                        cooldownText.textContent = `⏳ Please wait ${seconds} seconds before trying again.`;
+                        cooldownText.innerHTML = `<i class="fas fa-hourglass-half"></i> Please wait ${seconds} seconds before trying again.`;
                     }
                 }, 1000);
             }
@@ -314,10 +317,11 @@
 
                         if (error) {
                             console.error('Signup error:', error);
-                            if (error.status === 429 || error.message.includes('only request this after')) {
-                                errorText.textContent = 'Too many attempts. Please wait before trying again.';
+                            // Rate limiting: 429
+                            if (error.status === 429 || error.message.toLowerCase().includes('rate limit') || error.message.toLowerCase().includes('too many')) {
+                                errorText.textContent = 'Too many signup attempts. Please wait 30 seconds and try again.';
                                 errorDiv.classList.add('show');
-                                startCooldown(15);
+                                startCooldown(30); // 30-second cooldown
                                 return;
                             }
                             if (error.message.includes('already registered')) {
