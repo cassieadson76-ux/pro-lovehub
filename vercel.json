@@ -9,5 +9,8 @@
       "destination": "/admin-login.html"
     },
     {
-      "source": "/members.html",
-      "destination": "/members.html
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
