@@ -180,7 +180,7 @@
 
                         if (member && member.source === 'admin') {
                             localStorage.setItem('isAdminLoggedIn', 'true');
-                            window.location.href = 'admin-panel.html';
+                            window.location.href = 'admin-panel.html'; // ✅ Direct redirect
                         } else {
                             errorText.textContent = 'Access denied. You are not an admin.';
                             errorDiv.classList.add('show');
