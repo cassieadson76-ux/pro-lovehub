@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
     <style>
+        /* same styles as before */
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Inter',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#f5f0f2; padding:20px; }
         .login-wrapper { display:flex; max-width:1000px; width:100%; min-height:600px; background:#fff; border-radius:32px; box-shadow:0 40px 80px rgba(26,20,35,0.12); overflow:hidden; }
@@ -137,6 +138,8 @@
             const form = document.getElementById('loginForm');
             const submitBtn = document.getElementById('submitBtn');
             const cooldownText = document.getElementById('cooldownText');
+            const errorDiv = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
 
             window.togglePassword = function() {
                 const input = document.getElementById('loginPassword');
@@ -176,12 +179,10 @@
                     e.preventDefault();
                     submitBtn.disabled = true;
                     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+                    errorDiv.classList.remove('show');
 
                     const email = document.getElementById('loginEmail').value.trim();
                     const password = document.getElementById('loginPassword').value.trim();
-                    const errorDiv = document.getElementById('errorMessage');
-                    const errorText = document.getElementById('errorText');
-                    errorDiv.classList.remove('show');
 
                     if (!email || !password) {
                         errorText.textContent = 'Please fill in all fields.';
@@ -193,25 +194,42 @@
 
                     try {
                         const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
                         if (error) {
+                            console.error('Login error:', error);
+
+                            // Handle specific error codes
+                            if (error.status === 400) {
+                                errorText.textContent = 'Invalid email or password. Please try again.';
+                                errorDiv.classList.add('show');
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign In';
+                                return;
+                            }
                             if (error.status === 429 || error.message.includes('only request this after')) {
                                 errorText.textContent = 'Too many attempts. Please wait before trying again.';
                                 errorDiv.classList.add('show');
                                 startCooldown(15);
                                 return;
                             }
-                            errorText.textContent = error.message.includes('Invalid login credentials') ? 'Invalid email or password.' : error.message;
+                            errorText.textContent = error.message || 'Login failed. Please try again.';
                             errorDiv.classList.add('show');
                             submitBtn.disabled = false;
                             submitBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign In';
                             return;
                         }
 
-                        const { data: member } = await supabaseClient
+                        // Success — check admin role
+                        const { data: member, error: memberError } = await supabaseClient
                             .from('members')
                             .select('source')
                             .eq('id', data.user.id)
                             .single();
+
+                        if (memberError) {
+                            console.warn('Member fetch error:', memberError);
+                            // Still proceed — user exists in auth but maybe not in members table yet
+                        }
 
                         if (member && member.source === 'admin') {
                             localStorage.setItem('isAdminLoggedIn', 'true');
@@ -220,11 +238,11 @@
                             window.location.href = 'members.html';
                         }
                     } catch (err) {
+                        console.error('Unexpected error:', err);
                         errorText.textContent = 'Something went wrong. Please try again.';
                         errorDiv.classList.add('show');
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign In';
-                        console.error(err);
                     }
                 });
             }
