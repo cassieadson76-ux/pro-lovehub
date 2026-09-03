@@ -295,6 +295,18 @@
 
         @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
         .match-card { animation:fadeInUp 0.5s ease forwards; }
+        .match-card:nth-child(1) { animation-delay:0.05s; }
+        .match-card:nth-child(2) { animation-delay:0.10s; }
+        .match-card:nth-child(3) { animation-delay:0.15s; }
+        .match-card:nth-child(4) { animation-delay:0.20s; }
+        .match-card:nth-child(5) { animation-delay:0.25s; }
+        .match-card:nth-child(6) { animation-delay:0.30s; }
+        .match-card:nth-child(7) { animation-delay:0.35s; }
+        .match-card:nth-child(8) { animation-delay:0.40s; }
+        .match-card:nth-child(9) { animation-delay:0.45s; }
+        .match-card:nth-child(10) { animation-delay:0.50s; }
+        .match-card:nth-child(11) { animation-delay:0.55s; }
+        .match-card:nth-child(12) { animation-delay:0.60s; }
     </style>
 </head>
 <body>
@@ -439,8 +451,8 @@
             async function uploadPhoto(memberId, file) {
                 try {
                     const fileExt = file.name.split('.').pop();
-                    const fileName = `${memberId}.${fileExt}`;
-                    const filePath = `public/${fileName}`;
+                    const fileName = memberId + '.' + fileExt;
+                    const filePath = 'public/' + fileName;
 
                     const { error: uploadError } = await supabase.storage
                         .from('member-photos')
@@ -470,7 +482,7 @@
             // Open modal
             function openPhotoModal(memberId, memberName) {
                 photoMemberId.value = memberId;
-                modalMemberName.textContent = `Upload a profile photo for ${memberName}.`;
+                modalMemberName.textContent = 'Upload a profile photo for ' + memberName + '.';
                 photoPreview.style.display = 'none';
                 photoInput.value = '';
                 photoModal.classList.add('open');
