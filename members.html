@@ -1,718 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Find Members — ProLoveHub</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
-    <style>
-        :root {
-            --primary: #C2185B;
-            --primary-dark: #8B0E3D;
-            --primary-light: #F8E8EE;
-            --primary-gradient: linear-gradient(135deg, #C2185B, #E85D8A);
-            --secondary: #D4A54A;
-            --secondary-light: #FDF6E8;
-            --dark: #1A1423;
-            --text: #2D2A2E;
-            --text-light: #6B6570;
-            --text-lighter: #9A94A3;
-            --white: #FFFFFF;
-            --off-white: #FAF9FB;
-            --shadow-sm: 0 4px 20px rgba(26, 20, 35, 0.06);
-            --shadow-md: 0 12px 40px rgba(26, 20, 35, 0.08);
-            --shadow-lg: 0 24px 60px rgba(194, 24, 91, 0.12);
-            --radius: 20px;
-            --radius-sm: 12px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--off-white);
-            color: var(--text);
-            min-height: 100vh;
-        }
-
-        /* ===== NAVBAR ===== */
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.97);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 2px 40px rgba(0, 0, 0, 0.06);
-            padding: 12px 0;
-        }
-
-        .navbar .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .navbar .logo {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            text-decoration: none;
-        }
-
-        .navbar .logo .logo-icon {
-            width: 44px;
-            height: 44px;
-            background: var(--primary-gradient);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            box-shadow: 0 4px 16px rgba(194, 24, 91, 0.25);
-        }
-
-        .navbar .logo .brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            font-weight: 900;
-        }
-        .navbar .logo .brand .pro { color: var(--primary); }
-        .navbar .logo .brand .love { color: var(--dark); }
-        .navbar .logo .brand .hub { color: var(--secondary); }
-
-        .navbar .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            list-style: none;
-        }
-
-        .navbar .nav-links a {
-            font-weight: 500;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 15px;
-            transition: var(--transition);
-        }
-
-        .navbar .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .navbar .nav-links .btn-nav {
-            padding: 10px 24px;
-            border-radius: 50px;
-            background: var(--primary-gradient);
-            color: white;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .navbar .nav-links .btn-nav:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(194, 24, 91, 0.3);
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 4px;
-        }
-
-        .hamburger span {
-            width: 28px;
-            height: 2.5px;
-            background: var(--dark);
-            border-radius: 4px;
-            transition: var(--transition);
-        }
-
-        /* ===== PAGE HEADER ===== */
-        .page-header {
-            padding: 40px 0 24px;
-            text-align: center;
-        }
-
-        .page-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 40px;
-            font-weight: 800;
-            color: var(--dark);
-        }
-
-        .page-header h1 .highlight {
-            color: var(--primary);
-        }
-
-        .page-header p {
-            color: var(--text-light);
-            font-size: 18px;
-            margin-top: 4px;
-        }
-
-        /* ===== FILTERS ===== */
-        .filters-bar {
-            max-width: 1200px;
-            margin: 0 auto 32px;
-            padding: 0 24px;
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .filters-bar .search-box {
-            flex: 1;
-            min-width: 200px;
-            display: flex;
-            align-items: center;
-            background: var(--white);
-            border-radius: 50px;
-            padding: 0 16px;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            transition: var(--transition);
-        }
-
-        .filters-bar .search-box:focus-within {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.06);
-        }
-
-        .filters-bar .search-box i {
-            color: var(--text-lighter);
-        }
-
-        .filters-bar .search-box input {
-            border: none;
-            padding: 12px 14px;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            background: transparent;
-            flex: 1;
-            outline: none;
-            color: var(--text);
-        }
-
-        .filters-bar .search-box input::placeholder {
-            color: var(--text-lighter);
-        }
-
-        .filters-bar select {
-            padding: 12px 20px;
-            border-radius: 50px;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            background: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            color: var(--text);
-            outline: none;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .filters-bar select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.06);
-        }
-
-        .filters-bar .stats-text {
-            font-size: 14px;
-            color: var(--text-light);
-            margin-left: auto;
-        }
-
-        /* ===== MEMBERS GRID ===== */
-        .members-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px 60px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-        }
-
-        .member-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            transition: var(--transition);
-        }
-
-        .member-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary-light);
-        }
-
-        .member-card .card-image {
-            height: 200px;
-            background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .member-card .card-image .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--white);
-            border: 4px solid var(--white);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .member-card .card-image .status-badge {
-            position: absolute;
-            bottom: 14px;
-            right: 14px;
-            padding: 4px 14px;
-            border-radius: 50px;
-            font-size: 11px;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .member-card .card-image .status-badge.online {
-            color: #4CAF50;
-        }
-        .member-card .card-image .status-badge.offline {
-            color: var(--text-lighter);
-        }
-
-        .member-card .card-body {
-            padding: 18px 20px 16px;
-        }
-
-        .member-card .card-body .name-age {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2px;
-        }
-
-        .member-card .card-body .name-age h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .member-card .card-body .name-age .age {
-            font-size: 15px;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-
-        .member-card .card-body .location {
-            font-size: 13px;
-            color: var(--text-lighter);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            margin-bottom: 10px;
-        }
-
-        .member-card .card-body .interests {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 14px;
-        }
-
-        .member-card .card-body .interests span {
-            background: var(--off-white);
-            padding: 3px 12px;
-            border-radius: 50px;
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-light);
-        }
-
-        .member-card .card-body .interests span i {
-            margin-right: 4px;
-            font-size: 10px;
-            color: var(--primary);
-        }
-
-        .member-card .card-body .view-btn {
-            width: 100%;
-            padding: 10px;
-            border-radius: 50px;
-            border: 2px solid var(--primary);
-            background: transparent;
-            color: var(--primary);
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .member-card .card-body .view-btn:hover {
-            background: var(--primary-gradient);
-            color: var(--white);
-            border-color: transparent;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(194, 24, 91, 0.25);
-        }
-
-        /* ===== LOADING ===== */
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-lighter);
-        }
-
-        .loading i {
-            font-size: 48px;
-            color: var(--primary-light);
-            margin-bottom: 16px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* ===== EMPTY STATE ===== */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            grid-column: 1 / -1;
-            color: var(--text-lighter);
-        }
-
-        .empty-state i {
-            font-size: 56px;
-            color: var(--primary-light);
-            margin-bottom: 16px;
-        }
-
-        .empty-state h3 {
-            color: var(--text);
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .navbar .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--white);
-                padding: 24px;
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-                border-radius: 0 0 var(--radius) var(--radius);
-            }
-            .navbar .nav-links.open {
-                display: flex;
-            }
-            .hamburger {
-                display: flex;
-            }
-            .page-header h1 {
-                font-size: 30px;
-            }
-            .filters-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .filters-bar .stats-text {
-                margin-left: 0;
-                text-align: center;
-            }
-            .members-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 16px;
-                padding: 0 16px 40px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .members-grid {
-                grid-template-columns: 1fr;
-            }
-            .page-header h1 {
-                font-size: 24px;
-            }
-            .page-header p {
-                font-size: 15px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Members — ProLoveHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Inter',sans-serif;
+      background:#FAF9FB;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    .container { max-width:1200px; margin:0 auto; padding:24px; flex:1; }
+    .header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px 0 20px;
+      border-bottom:1px solid rgba(0,0,0,0.06);
+      margin-bottom:32px;
+    }
+    .header .logo {
+      font-family:'Playfair Display',serif;
+      font-size:28px;
+      font-weight:800;
+    }
+    .header .logo .pro { color:#C2185B; }
+    .header .logo .love { color:#1A1423; }
+    .header .logo .hub { color:#D4A54A; }
+    .header .logout-btn {
+      padding:10px 24px;
+      border:1px solid rgba(0,0,0,0.08);
+      border-radius:50px;
+      background:#fff;
+      cursor:pointer;
+      font-weight:600;
+      font-size:14px;
+      transition:0.3s;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .header .logout-btn:hover {
+      border-color:#C2185B;
+      color:#C2185B;
+      box-shadow:0 4px 12px rgba(194,24,91,0.1);
+    }
+    .page-title {
+      font-size:32px;
+      font-weight:800;
+      margin-bottom:4px;
+    }
+    .page-sub {
+      color:#6B6570;
+      margin-bottom:24px;
+    }
+    .members-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:20px;
+    }
+    .member-card {
+      background:#fff;
+      border-radius:16px;
+      padding:24px;
+      box-shadow:0 4px 20px rgba(26,20,35,0.06);
+      border:1px solid rgba(0,0,0,0.04);
+      transition:0.3s;
+    }
+    .member-card:hover { transform:translateY(-4px); box-shadow:0 8px 30px rgba(26,20,35,0.08); }
+    .member-card .avatar {
+      width:64px; height:64px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:24px; font-weight:700; color:#fff;
+      margin-bottom:12px;
+    }
+    .member-card .name { font-size:18px; font-weight:700; }
+    .member-card .email { font-size:14px; color:#6B6570; }
+    .member-card .status {
+      display:inline-block; padding:4px 14px; border-radius:50px;
+      font-size:12px; font-weight:600; margin-top:8px;
+    }
+    .member-card .status.active { background:#E8F5E9; color:#2E7D32; }
+    .member-card .status.pending { background:#FFF3E0; color:#E65100; }
+    .member-card .status.rejected { background:#FFEBEE; color:#C62828; }
+    .loading, .empty {
+      text-align:center; padding:60px 20px; color:#9A94A3;
+    }
+    .loading i, .empty i { font-size:48px; color:#F8E8EE; margin-bottom:16px; display:block; }
+    @media (max-width:768px) { .members-grid { grid-template-columns:1fr 1fr; } }
+    @media (max-width:480px) { .members-grid { grid-template-columns:1fr; } }
+  </style>
 </head>
 <body>
-
-    <!-- ===== NAVBAR ===== -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">
-                <div class="logo-icon"><i class="fas fa-heart"></i></div>
-                <span class="brand">
-                    <span class="pro">Pro</span><span class="love">Love</span><span class="hub">Hub</span>
-                </span>
-            </a>
-
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="members.html" style="color:var(--primary);font-weight:600;">Find Members</a></li>
-                <li><a href="login.html" class="btn-nav"><i class="fas fa-arrow-right-to-bracket"></i> Log In</a></li>
-                <li><a href="admin-login.html" style="font-size:13px;color:var(--text-lighter);"><i class="fas fa-shield-alt"></i> Admin</a></li>
-            </ul>
-
-            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- ===== PAGE HEADER ===== -->
-    <div class="page-header">
-        <h1>Find Your <span class="highlight">Perfect Match</span></h1>
-        <p>Browse through our community of singles looking for meaningful connections.</p>
+  <div class="container">
+    <div class="header">
+      <div class="logo"><span class="pro">Pro</span><span class="love">Love</span><span class="hub">Hub</span></div>
+      <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
 
-    <!-- ===== FILTERS ===== -->
-    <div class="filters-bar">
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Search by name or location..." />
-        </div>
-        <select id="statusFilter">
-            <option value="all">All Members</option>
-            <option value="active">Active</option>
-            <option value="pending">Pending</option>
-        </select>
-        <span class="stats-text" id="statsText">Loading members...</span>
+    <h1 class="page-title">Members</h1>
+    <p class="page-sub">Browse through our community of singles.</p>
+
+    <div id="membersGrid" class="members-grid">
+      <div class="loading"><i class="fas fa-spinner fa-spin"></i>Loading members...</div>
     </div>
+  </div>
 
-    <!-- ===== MEMBERS GRID ===== -->
-    <div class="members-grid" id="membersGrid">
-        <div class="loading">
-            <i class="fas fa-spinner"></i>
-            <p>Loading members...</p>
-        </div>
-    </div>
+  <!-- Load Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    const SUPABASE_URL = 'https://precvldulohwudpfmzsn.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZWN2bGR1bG9od3VkcGZtenNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwMDMwNzUsImV4cCI6MjEwMjU3OTA3NX0.BYpgOVlLG1cw5pdYfjrhI_bP615ALKCr1tb9U5Ooc0c';
+    const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    <!-- ============================================================ -->
-    <!-- ===== JAVASCRIPT ===== -->
-    <!-- ============================================================ -->
-    <script type="module">
-        // ================================================================
-        // Import Supabase client
-        // ================================================================
-        import { supabase } from './supabase.js'
+    // Check if user is logged in
+    async function checkAuth() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        window.location.href = 'loginpage.html';
+        return false;
+      }
+      return true;
+    }
 
-        // ================================================================
-        // DOM Elements
-        // ================================================================
-        const grid = document.getElementById('membersGrid')
-        const searchInput = document.getElementById('searchInput')
-        const statusFilter = document.getElementById('statusFilter')
-        const statsText = document.getElementById('statsText')
+    // Load members
+    async function loadMembers() {
+      const grid = document.getElementById('membersGrid');
+      const { data, error } = await supabase
+        .from('members')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-        let allMembers = []
-        let filteredMembers = []
+      if (error) {
+        grid.innerHTML = `<div class="empty"><i class="fas fa-exclamation-triangle"></i><p>Error: ${error.message}</p></div>`;
+        return;
+      }
+      if (!data || data.length === 0) {
+        grid.innerHTML = `<div class="empty"><i class="fas fa-users-slash"></i><p>No members yet. Be the first to join!</p></div>`;
+        return;
+      }
 
-        // ================================================================
-        // Fetch Members
-        // ================================================================
-        async function fetchMembers() {
-            try {
-                const { data, error } = await supabase
-                    .from('members')
-                    .select('*')
-                    .order('created_at', { ascending: false })
+      const colors = ['#C2185B', '#D4A54A', '#4CAF50', '#7B1FA2', '#00695C', '#E65100'];
+      grid.innerHTML = data.map((m, i) => {
+        const initials = m.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+        const color = colors[i % colors.length];
+        return `
+          <div class="member-card">
+            <div class="avatar" style="background:${color};">${initials}</div>
+            <div class="name">${m.name}</div>
+            <div class="email">${m.email}</div>
+            <span class="status ${m.status || 'pending'}">${m.status || 'pending'}</span>
+          </div>
+        `;
+      }).join('');
+    }
 
-                if (error) throw error
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', async function() {
+      if (confirm('Logout?')) {
+        await supabase.auth.signOut();
+        localStorage.removeItem('isAdminLoggedIn');
+        window.location.href = 'index.html';
+      }
+    });
 
-                allMembers = data || []
-                filteredMembers = [...allMembers]
-                renderMembers()
-                updateStats()
-            } catch (err) {
-                console.error('Error fetching members:', err)
-                grid.innerHTML = `
-                    <div class="empty-state" style="grid-column:1/-1;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>Could not load members</h3>
-                        <p>${err.message || 'Please try again later.'}</p>
-                    </div>
-                `
-            }
-        }
-
-        // ================================================================
-        // Render Members
-        // ================================================================
-        function renderMembers() {
-            if (filteredMembers.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state" style="grid-column:1/-1;">
-                        <i class="fas fa-users-slash"></i>
-                        <h3>No members found</h3>
-                        <p>Try adjusting your filters or check back later.</p>
-                    </div>
-                `
-                return
-            }
-
-            const colors = ['#C2185B', '#D4A54A', '#4CAF50', '#7B1FA2', '#00695C', '#E65100', '#1565C0', '#AD1457']
-
-            grid.innerHTML = filteredMembers.map((member, index) => {
-                const initials = member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-                const color = colors[index % colors.length]
-
-                let age = '—'
-                if (member.dob) {
-                    const birth = new Date(member.dob)
-                    let ageNum = new Date().getFullYear() - birth.getFullYear()
-                    const mth = new Date().getMonth() - birth.getMonth()
-                    if (mth < 0 || (mth === 0 && new Date().getDate() < birth.getDate())) ageNum--
-                    if (ageNum > 0) age = ageNum
-                }
-
-                const interests = Array.isArray(member.interests) ? member.interests : []
-                const statusDot = member.status === 'active' ? 'online' : 'offline'
-
-                return `
-                    <div class="member-card">
-                        <div class="card-image">
-                            <div class="avatar" style="background:${color};">${initials}</div>
-                            <span class="status-badge ${statusDot}">
-                                <i class="fas fa-circle" style="font-size:8px;"></i> ${member.status === 'active' ? 'Active' : member.status === 'pending' ? 'Pending' : 'Inactive'}
-                            </span>
-                        </div>
-                        <div class="card-body">
-                            <div class="name-age">
-                                <h3>${escapeHtml(member.name)}</h3>
-                                <span class="age">${age}</span>
-                            </div>
-                            <div class="location">
-                                <i class="fas fa-map-marker-alt"></i> ${escapeHtml(member.location || 'Not set')}
-                            </div>
-                            <div class="interests">
-                                ${interests.slice(0, 3).map(i => `<span><i class="fas fa-tag"></i> ${escapeHtml(i)}</span>`).join('')}
-                                ${interests.length > 3 ? `<span>+${interests.length - 3} more</span>` : ''}
-                            </div>
-                            <button class="view-btn" onclick="alert('Viewing ${escapeHtml(member.name)}\'s profile - coming soon!')">
-                                <i class="fas fa-eye"></i> View Profile
-                            </button>
-                        </div>
-                    </div>
-                `
-            }).join('')
-        }
-
-        // ================================================================
-        // Update Stats
-        // ================================================================
-        function updateStats() {
-            const total = allMembers.length
-            const active = allMembers.filter(m => m.status === 'active').length
-            const showing = filteredMembers.length
-            statsText.textContent = `Showing ${showing} of ${total} members (${active} active)`
-        }
-
-        // ================================================================
-        // Filtering
-        // ================================================================
-        function filterMembers() {
-            const search = searchInput.value.toLowerCase().trim()
-            const status = statusFilter.value
-
-            filteredMembers = allMembers.filter(member => {
-                // Search filter
-                if (search) {
-                    const name = (member.name || '').toLowerCase()
-                    const location = (member.location || '').toLowerCase()
-                    if (!name.includes(search) && !location.includes(search)) {
-                        return false
-                    }
-                }
-
-                // Status filter
-                if (status !== 'all' && member.status !== status) {
-                    return false
-                }
-
-                return true
-            })
-
-            renderMembers()
-            updateStats()
-        }
-
-        // ================================================================
-        // Utility
-        // ================================================================
-        function escapeHtml(text) {
-            if (!text) return '—'
-            const div = document.createElement('div')
-            div.textContent = text
-            return div.innerHTML
-        }
-
-        // ================================================================
-        // Event Listeners
-        // ================================================================
-        searchInput.addEventListener('input', filterMembers)
-        statusFilter.addEventListener('change', filterMembers)
-
-        // ================================================================
-        // Hamburger Menu
-        // ================================================================
-        document.getElementById('hamburger').addEventListener('click', () => {
-            document.getElementById('navLinks').classList.toggle('open')
-        })
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('navLinks').classList.remove('open')
-            })
-        })
-
-        // ================================================================
-        // Init
-        // ================================================================
-        fetchMembers()
-        console.log('❤️ ProLoveHub — Members Page loaded')
-    </script>
+    // Init
+    (async function() {
+      const loggedIn = await checkAuth();
+      if (loggedIn) {
+        loadMembers();
+      }
+    })();
+  </script>
 </body>
 </html>
