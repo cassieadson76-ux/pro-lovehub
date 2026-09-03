@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
     <style>
-        /* same styles as before (kept concise) */
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Inter',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#f5f0f2; padding:20px; }
         .login-wrapper { display:flex; max-width:1000px; width:100%; min-height:600px; background:#fff; border-radius:32px; box-shadow:0 40px 80px rgba(26,20,35,0.12); overflow:hidden; }
@@ -50,6 +49,7 @@
         .login-form-panel .form-options .forgot-link:hover { text-decoration:underline; }
         .btn-primary { display:inline-flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:16px; border:none; border-radius:50px; background:linear-gradient(135deg,#C2185B,#E85D8A); color:#fff; font-size:16px; font-weight:600; font-family:'Inter',sans-serif; cursor:pointer; transition:0.3s; box-shadow:0 8px 30px rgba(194,24,91,0.3); }
         .btn-primary:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(194,24,91,0.4); }
+        .btn-primary:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
         .error-message { background:#FFEBEE; color:#C62828; padding:12px 16px; border-radius:10px; font-size:14px; margin-bottom:16px; display:none; align-items:center; gap:8px; }
         .error-message.show { display:flex; }
         .security-badge { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:18px; font-size:12px; color:#9A94A3; }
@@ -57,17 +57,16 @@
         .form-footer { text-align:center; margin-top:18px; font-size:14px; color:#6B6570; }
         .form-footer a { color:#C2185B; font-weight:600; text-decoration:none; }
         .form-footer a:hover { text-decoration:underline; }
+        .cooldown-text { font-size:13px; color:#C2185B; margin-top:8px; display:none; }
         @media (max-width:820px) { .login-wrapper { flex-direction:column; max-width:480px; border-radius:24px; } .login-brand { padding:32px 28px; min-height:240px; } .login-brand .hero-text h1 { font-size:28px; } .login-form-panel { padding:32px 28px; } .login-brand .hero-text { max-width:100%; } }
         @media (max-width:480px) { .login-brand { padding:24px 20px; } .login-form-panel { padding:24px 20px; } .login-brand .logo .brand { font-size:22px; } .login-form-panel .header h2 { font-size:26px; } }
     </style>
 </head>
 <body>
 
-    <!-- Load Supabase from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
     <div class="login-wrapper">
-        <!-- Left Panel -->
         <div class="login-brand">
             <a href="index.html" class="logo">
                 <div class="icon"><i class="fas fa-heart"></i></div>
@@ -92,7 +91,6 @@
             </div>
         </div>
 
-        <!-- Right Panel -->
         <div class="login-form-panel">
             <div class="header">
                 <h2>Welcome <span class="highlight">Back</span></h2>
@@ -122,7 +120,8 @@
                     <label class="remember-me"><input type="checkbox" id="rememberMe" /> Remember me</label>
                     <a href="#" class="forgot-link" onclick="alert('📧 Password reset link sent to your email.')">Forgot password?</a>
                 </div>
-                <button type="submit" class="btn-primary"><i class="fas fa-arrow-right-to-bracket"></i> Sign In</button>
+                <button type="submit" class="btn-primary" id="submitBtn"><i class="fas fa-arrow-right-to-bracket"></i> Sign In</button>
+                <div class="cooldown-text" id="cooldownText"></div>
                 <div class="security-badge"><i class="fas fa-shield-halved"></i> Secure &amp; encrypted connection</div>
                 <div class="form-footer">Don't have an account? <a href="signup.html">Create Account</a></div>
             </form>
@@ -135,7 +134,10 @@
             const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZWN2bGR1bG9od3VkcGZtenNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwMDMwNzUsImV4cCI6MjEwMjU3OTA3NX0.BYpgOVlLG1cw5pdYfjrhI_bP615ALKCr1tb9U5Ooc0c';
             const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            // Toggle password visibility
+            const form = document.getElementById('loginForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const cooldownText = document.getElementById('cooldownText');
+
             window.togglePassword = function() {
                 const input = document.getElementById('loginPassword');
                 const icon = document.getElementById('toggleIcon');
@@ -150,10 +152,31 @@
                 }
             };
 
-            const form = document.getElementById('loginForm');
+            function startCooldown(seconds) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${seconds}s`;
+                cooldownText.style.display = 'block';
+                cooldownText.textContent = `⏳ Please wait ${seconds} seconds before trying again.`;
+                const interval = setInterval(() => {
+                    seconds--;
+                    if (seconds <= 0) {
+                        clearInterval(interval);
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign In';
+                        cooldownText.style.display = 'none';
+                    } else {
+                        submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${seconds}s`;
+                        cooldownText.textContent = `⏳ Please wait ${seconds} seconds before trying again.`;
+                    }
+                }, 1000);
+            }
+
             if (form) {
                 form.addEventListener('submit', async function(e) {
                     e.preventDefault();
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+
                     const email = document.getElementById('loginEmail').value.trim();
                     const password = document.getElementById('loginPassword').value.trim();
                     const errorDiv = document.getElementById('errorMessage');
@@ -163,14 +186,24 @@
                     if (!email || !password) {
                         errorText.textContent = 'Please fill in all fields.';
                         errorDiv.classList.add('show');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign In';
                         return;
                     }
 
                     try {
                         const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
                         if (error) {
+                            if (error.status === 429 || error.message.includes('only request this after')) {
+                                errorText.textContent = 'Too many attempts. Please wait before trying again.';
+                                errorDiv.classList.add('show');
+                                startCooldown(15);
+                                return;
+                            }
                             errorText.textContent = error.message.includes('Invalid login credentials') ? 'Invalid email or password.' : error.message;
                             errorDiv.classList.add('show');
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign In';
                             return;
                         }
 
@@ -189,11 +222,11 @@
                     } catch (err) {
                         errorText.textContent = 'Something went wrong. Please try again.';
                         errorDiv.classList.add('show');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign In';
                         console.error(err);
                     }
                 });
-            } else {
-                console.error('Form with id "loginForm" not found.');
             }
         });
     </script>
