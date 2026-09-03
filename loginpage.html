@@ -3,45 +3,26 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login · Sign Up — ProLoveHub</title>
-    <!-- Font Awesome -->
+    <title>Sign Up — ProLoveHub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
     <style>
-        /* ===================== CSS VARIABLES ===================== */
         :root {
             --primary: #C2185B;
-            --primary-dark: #8B0E3D;
-            --primary-light: #F8E8EE;
             --primary-gradient: linear-gradient(135deg, #C2185B, #E85D8A);
             --secondary: #D4A54A;
-            --secondary-dark: #B8943A;
-            --secondary-light: #FDF6E8;
-            --secondary-gradient: linear-gradient(135deg, #D4A54A, #E8C86A);
             --dark: #1A1423;
-            --dark-light: #2D2840;
             --text: #2D2A2E;
             --text-light: #6B6570;
             --text-lighter: #9A94A3;
             --white: #FFFFFF;
             --off-white: #FAF9FB;
-            --shadow-sm: 0 4px 20px rgba(26, 20, 35, 0.06);
-            --shadow-md: 0 12px 40px rgba(26, 20, 35, 0.08);
-            --shadow-lg: 0 24px 60px rgba(194, 24, 91, 0.12);
             --shadow-xl: 0 32px 80px rgba(194, 24, 91, 0.18);
             --radius: 20px;
             --radius-sm: 12px;
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        /* ===================== RESET ===================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: var(--off-white);
@@ -49,27 +30,221 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            -webkit-font-smoothing: antialiased;
         }
-
-        ::selection {
-            background: var(--primary);
+        .auth-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+            background: var(--white);
+        }
+        .auth-left {
+            flex: 1.2;
+            background: linear-gradient(145deg, #1A1423 0%, #2D2840 50%, #3A2A4A 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 48px;
+            position: relative;
+            overflow: hidden;
             color: var(--white);
         }
-
-        /* ===================== SCROLLBAR ===================== */
-        ::-webkit-scrollbar {
-            width: 8px;
+        .auth-left::before {
+            content: '❤';
+            position: absolute;
+            font-size: 420px;
+            opacity: 0.04;
+            top: -60px;
+            right: -60px;
+            transform: rotate(12deg);
+            font-family: 'Playfair Display', serif;
+            pointer-events: none;
         }
-        ::-webkit-scrollbar-track {
+        .auth-left .brand-large .logo-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            margin-bottom: 24px;
+        }
+        .auth-left .brand-large .logo-icon .icon-bg {
+            width: 56px; height: 56px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: var(--secondary);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .auth-left .brand-large .logo-icon .brand-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 900;
+        }
+        .auth-left .brand-large .logo-icon .brand-text .pro { color: #FFB6C1; }
+        .auth-left .brand-large .logo-icon .brand-text .love { color: var(--white); }
+        .auth-left .brand-large .logo-icon .brand-text .hub { color: var(--secondary); }
+        .auth-left .hero-text { max-width: 420px; }
+        .auth-left .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+        .auth-left .hero-text h1 .gold { color: var(--secondary); }
+        .auth-left .hero-text p { font-size: 16px; opacity: 0.7; line-height: 1.7; margin-bottom: 32px; }
+        .auth-left .feature-list { display: flex; flex-direction: column; gap: 14px; }
+        .auth-left .feature-list .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .auth-left .feature-list .feature-item i {
+            width: 28px; height: 28px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: var(--secondary);
+        }
+        .auth-left .trust-badge-bottom {
+            margin-top: 48px;
+            display: flex;
+            gap: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .auth-left .trust-badge-bottom span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            opacity: 0.6;
+        }
+        .auth-left .trust-badge-bottom span i { color: var(--secondary); }
+        .auth-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
             background: var(--off-white);
         }
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
+        .auth-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 48px 40px;
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 460px;
         }
-
-        /* ===================== BUTTONS ===================== */
+        .auth-card .card-header { text-align: center; margin-bottom: 28px; }
+        .auth-card .card-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        .auth-card .card-header h2 .highlight { color: var(--primary); }
+        .auth-card .card-header p { color: var(--text-light); font-size: 15px; margin-top: 4px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+        .form-group label .required { color: var(--primary); }
+        .input-wrapper { position: relative; }
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-lighter);
+            font-size: 15px;
+            transition: var(--transition);
+        }
+        .input-wrapper input, .input-wrapper select {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(0,0,0,0.06);
+            background: var(--off-white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: var(--text);
+            outline: none;
+            transition: var(--transition);
+            appearance: none;
+        }
+        .input-wrapper select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B6570' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+        .input-wrapper input:focus, .input-wrapper select:focus {
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(194,24,91,0.06);
+        }
+        .input-wrapper input:focus + i, .input-wrapper select:focus + i { color: var(--primary); }
+        .input-wrapper .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-lighter);
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .gender-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .gender-group label {
+            flex: 1;
+            text-align: center;
+            padding: 10px 8px;
+            border-radius: var(--radius-sm);
+            border: 2px solid rgba(0,0,0,0.06);
+            background: var(--off-white);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: var(--transition);
+            margin-bottom: 0;
+        }
+        .gender-group label i { margin-right: 6px; }
+        .gender-group input[type="radio"] { display: none; }
+        .gender-group input[type="radio"]:checked + label {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(194,24,91,0.1);
+        }
+        .gender-group label:hover { border-color: var(--primary); background: var(--primary-light); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .terms-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .terms-check input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--primary); margin-top: 2px; flex-shrink: 0; cursor: pointer; }
+        .terms-check a { color: var(--primary); font-weight: 600; text-decoration: none; }
+        .terms-check a:hover { text-decoration: underline; }
         .btn-primary {
             display: inline-flex;
             align-items: center;
@@ -85,496 +260,25 @@
             font-family: 'Inter', sans-serif;
             cursor: pointer;
             transition: var(--transition);
-            text-decoration: none;
-            box-shadow: 0 8px 30px rgba(194, 24, 91, 0.3);
-            position: relative;
-            overflow: hidden;
             width: 100%;
+            box-shadow: 0 8px 30px rgba(194,24,91,0.3);
         }
-
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-            transition: 0.6s;
-        }
-
-        .btn-primary:hover::after {
-            left: 100%;
-        }
-
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(194, 24, 91, 0.4);
+            box-shadow: 0 12px 40px rgba(194,24,91,0.4);
         }
-
-        /* ===================== AUTH LAYOUT ===================== */
-        .auth-container {
-            display: flex;
-            min-height: 100vh;
-            width: 100%;
-            background: var(--white);
-        }
-
-        /* ===== LEFT PANEL ===== */
-        .auth-left {
-            flex: 1.2;
-            background: linear-gradient(145deg, #1A1423 0%, #2D2840 50%, #3A2A4A 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 60px 48px;
-            position: relative;
-            overflow: hidden;
-            color: var(--white);
-        }
-
-        .auth-left::before {
-            content: '❤';
-            position: absolute;
-            font-size: 420px;
-            opacity: 0.04;
-            top: -60px;
-            right: -60px;
-            transform: rotate(12deg);
-            font-family: 'Playfair Display', serif;
-            pointer-events: none;
-        }
-
-        .auth-left .floating-shape {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.02);
-            pointer-events: none;
-        }
-
-        .auth-left .floating-shape.shape-1 {
-            width: 300px;
-            height: 300px;
-            top: 20%;
-            left: -80px;
-        }
-
-        .auth-left .floating-shape.shape-2 {
-            width: 200px;
-            height: 200px;
-            bottom: 20%;
-            right: -40px;
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .auth-left .brand-large {
-            position: relative;
-            z-index: 2;
-            margin-bottom: 40px;
-        }
-
-        .auth-left .brand-large .logo-icon {
-            display: inline-flex;
-            align-items: center;
-            gap: 16px;
-            text-decoration: none;
-            margin-bottom: 24px;
-        }
-
-        .auth-left .brand-large .logo-icon .icon-bg {
-            width: 56px;
-            height: 56px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            color: var(--secondary);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .auth-left .brand-large .logo-icon .brand-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-        }
-
-        .auth-left .brand-large .logo-icon .brand-text .pro {
-            color: #FFB6C1;
-        }
-        .auth-left .brand-large .logo-icon .brand-text .love {
-            color: var(--white);
-        }
-        .auth-left .brand-large .logo-icon .brand-text .hub {
-            color: var(--secondary);
-        }
-
-        .auth-left .hero-text {
-            position: relative;
-            z-index: 2;
-            max-width: 420px;
-        }
-
-        .auth-left .hero-text h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 38px;
-            font-weight: 800;
-            line-height: 1.1;
+        .error-message {
+            background: #FFEBEE;
+            color: #C62828;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
             margin-bottom: 16px;
-        }
-
-        .auth-left .hero-text h1 .gold {
-            color: var(--secondary);
-        }
-
-        .auth-left .hero-text p {
-            font-size: 16px;
-            opacity: 0.7;
-            line-height: 1.7;
-            margin-bottom: 32px;
-        }
-
-        .auth-left .feature-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .auth-left .feature-list .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        .auth-left .feature-list .feature-item i {
-            width: 28px;
-            height: 28px;
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            color: var(--secondary);
-            flex-shrink: 0;
-        }
-
-        .auth-left .trust-badge-bottom {
-            position: relative;
-            z-index: 2;
-            margin-top: 48px;
-            display: flex;
-            gap: 32px;
-            flex-wrap: wrap;
-            padding-top: 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .auth-left .trust-badge-bottom span {
-            display: flex;
+            display: none;
             align-items: center;
             gap: 8px;
-            font-size: 13px;
-            opacity: 0.6;
         }
-
-        .auth-left .trust-badge-bottom span i {
-            color: var(--secondary);
-            font-size: 16px;
-        }
-
-        /* ===== RIGHT PANEL ===== */
-        .auth-right {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 24px;
-            background: var(--off-white);
-        }
-
-        .auth-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 40px 32px;
-            box-shadow: var(--shadow-xl);
-            width: 100%;
-            max-width: 420px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            transition: var(--transition);
-        }
-
-        .auth-card .card-header {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .auth-card .card-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--dark);
-        }
-
-        .auth-card .card-header h2 .highlight {
-            color: var(--primary);
-        }
-
-        .auth-card .card-header p {
-            color: var(--text-light);
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        /* ===== TABS ===== */
-        .auth-tabs {
-            display: flex;
-            background: var(--off-white);
-            border-radius: 50px;
-            padding: 4px;
-            margin-bottom: 28px;
-            border: 1px solid rgba(0, 0, 0, 0.04);
-        }
-
-        .auth-tabs .tab-btn {
-            flex: 1;
-            padding: 10px 16px;
-            border: none;
-            background: transparent;
-            border-radius: 50px;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-        }
-
-        .auth-tabs .tab-btn.active {
-            background: var(--white);
-            color: var(--primary);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .auth-tabs .tab-btn:hover:not(.active) {
-            color: var(--text);
-        }
-
-        /* ===== FORMS ===== */
-        .auth-form {
-            display: block;
-        }
-
-        .auth-form.hidden {
-            display: none;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 5px;
-        }
-
-        .form-group label .required {
-            color: var(--primary);
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .input-wrapper i {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-lighter);
-            font-size: 15px;
-            transition: var(--transition);
-        }
-
-        .input-wrapper input,
-        .input-wrapper select {
-            width: 100%;
-            padding: 12px 16px 12px 44px;
-            border-radius: var(--radius-sm);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            background: var(--off-white);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            color: var(--text);
-            transition: var(--transition);
-            outline: none;
-            appearance: none;
-        }
-
-        .input-wrapper select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B6570' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            padding-right: 40px;
-            cursor: pointer;
-        }
-
-        .input-wrapper input:focus,
-        .input-wrapper select:focus {
-            border-color: var(--primary);
-            background: var(--white);
-            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.05);
-        }
-
-        .input-wrapper input:focus+i {
-            color: var(--primary);
-        }
-
-        .input-wrapper input::placeholder {
-            color: var(--text-lighter);
-            font-size: 13px;
-        }
-
-        .input-wrapper .toggle-password {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--text-lighter);
-            cursor: pointer;
-            font-size: 16px;
-            padding: 4px;
-            transition: var(--transition);
-        }
-
-        .input-wrapper .toggle-password:hover {
-            color: var(--text);
-        }
-
-        /* ===== GENDER SELECTION ===== */
-        .gender-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 4px;
-        }
-
-        .gender-group label {
-            flex: 1;
-            text-align: center;
-            padding: 10px 8px;
-            border-radius: var(--radius-sm);
-            border: 2px solid rgba(0, 0, 0, 0.06);
-            background: var(--off-white);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-light);
-            transition: var(--transition);
-            margin-bottom: 0;
-        }
-
-        .gender-group label i {
-            margin-right: 6px;
-            font-size: 14px;
-        }
-
-        .gender-group input[type="radio"] {
-            display: none;
-        }
-
-        .gender-group input[type="radio"]:checked+label {
-            border-color: var(--primary);
-            background: var(--primary-light);
-            color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(194, 24, 91, 0.1);
-        }
-
-        .gender-group label:hover {
-            border-color: var(--primary);
-            background: var(--primary-light);
-        }
-
-        /* ===== FORM OPTIONS ===== */
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 22px;
-            font-size: 13px;
-        }
-
-        .form-options .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-light);
-            cursor: pointer;
-        }
-
-        .form-options .remember-me input[type="checkbox"] {
-            width: 17px;
-            height: 17px;
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-
-        .form-options .forgot-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            font-size: 13px;
-        }
-
-        .form-options .forgot-link:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
-        }
-
-        /* ===== TERMS ===== */
-        .terms-check {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            font-size: 13px;
-            color: var(--text-light);
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-
-        .terms-check input[type="checkbox"] {
-            width: 17px;
-            height: 17px;
-            accent-color: var(--primary);
-            margin-top: 2px;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-
-        .terms-check a {
-            color: var(--primary);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .terms-check a:hover {
-            text-decoration: underline;
-        }
-
-        /* ===== SECURITY BADGE ===== */
+        .error-message.show { display: flex; }
         .security-badge {
             display: flex;
             align-items: center;
@@ -584,20 +288,13 @@
             font-size: 12px;
             color: var(--text-lighter);
         }
-
-        .security-badge i {
-            color: #4CAF50;
-            font-size: 14px;
-        }
-
-        /* ===== FORM FOOTER ===== */
+        .security-badge i { color: #4CAF50; font-size: 14px; }
         .form-footer {
             text-align: center;
             margin-top: 18px;
             font-size: 13px;
             color: var(--text-light);
         }
-
         .form-footer a {
             color: var(--primary);
             font-weight: 600;
@@ -605,388 +302,292 @@
             transition: var(--transition);
             cursor: pointer;
         }
-
-        .form-footer a:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .auth-left {
-                flex: 1;
-                padding: 48px 32px;
-            }
-            .auth-left .hero-text h1 {
-                font-size: 32px;
-            }
-        }
-
+        .form-footer a:hover { text-decoration: underline; }
         @media (max-width: 900px) {
-            .auth-container {
-                flex-direction: column;
-                min-height: 100vh;
-            }
-            .auth-left {
-                padding: 40px 32px;
-                min-height: 280px;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-            }
-            .auth-left .hero-text {
-                max-width: 100%;
-            }
-            .auth-left .feature-list {
-                align-items: center;
-            }
-            .auth-left .trust-badge-bottom {
-                justify-content: center;
-            }
-            .auth-left .brand-large .logo-icon {
-                justify-content: center;
-            }
-            .auth-left::before {
-                font-size: 200px;
-            }
-            .auth-right {
-                padding: 24px 16px;
-            }
-            .auth-card {
-                padding: 28px 20px;
-                max-width: 100%;
-                box-shadow: var(--shadow-md);
-            }
-            .gender-group label {
-                font-size: 13px;
-                padding: 8px 4px;
-            }
-            .gender-group label i {
-                margin-right: 4px;
-            }
+            .auth-container { flex-direction: column; }
+            .auth-left { padding: 40px 32px; min-height: 280px; justify-content: center; align-items: center; text-align: center; }
+            .auth-left .hero-text { max-width: 100%; }
+            .auth-left .feature-list { align-items: center; }
+            .auth-left .trust-badge-bottom { justify-content: center; }
+            .auth-left .brand-large .logo-icon { justify-content: center; }
+            .auth-right { padding: 24px 16px; }
+            .auth-card { padding: 28px 20px; max-width: 100%; }
         }
-
         @media (max-width: 480px) {
-            .auth-left .hero-text h1 {
-                font-size: 26px;
-            }
-            .auth-left {
-                padding: 24px 16px;
-                min-height: 200px;
-            }
-            .auth-left .trust-badge-bottom {
-                gap: 16px;
-                font-size: 12px;
-            }
-            .auth-card {
-                padding: 20px 16px;
-            }
-            .auth-card .card-header h2 {
-                font-size: 22px;
-            }
-            .auth-tabs .tab-btn {
-                font-size: 13px;
-                padding: 8px 12px;
-            }
-            .form-options {
-                flex-direction: column;
-                gap: 10px;
-                align-items: flex-start;
-            }
-            .gender-group {
-                flex-wrap: wrap;
-            }
-            .gender-group label {
-                flex: 1 0 30%;
-            }
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .auth-form:not(.hidden) {
-            animation: fadeInUp 0.35s ease forwards;
+            .auth-left .hero-text h1 { font-size: 26px; }
+            .auth-card { padding: 20px 16px; }
+            .auth-card .card-header h2 { font-size: 22px; }
+            .form-row { grid-template-columns: 1fr; }
+            .gender-group { flex-wrap: wrap; }
+            .gender-group label { flex: 1 0 30%; }
         }
     </style>
 </head>
 <body>
 
-    <div class="auth-container">
-
-        <!-- ===== LEFT PANEL ===== -->
-        <div class="auth-left">
-            <div class="floating-shape shape-1"></div>
-            <div class="floating-shape shape-2"></div>
-
-            <div class="brand-large">
-                <a href="#" class="logo-icon">
-                    <span class="icon-bg"><i class="fas fa-heart"></i></span>
-                    <span class="brand-text">
-                        <span class="pro">Pro</span><span class="love">Love</span><span class="hub">Hub</span>
-                    </span>
-                </a>
-            </div>
-
-            <div class="hero-text">
-                <h1>Find your <span class="gold">perfect match</span>.</h1>
-                <p>AI-powered compatibility &amp; meaningful connections.</p>
-            </div>
-
-            <div class="feature-list">
-                <div class="feature-item"><i class="fas fa-brain"></i> Science-backed matching</div>
-                <div class="feature-item"><i class="fas fa-shield-check"></i> Verified &amp; secure</div>
-                <div class="feature-item"><i class="fas fa-gem"></i> Curated daily matches</div>
-            </div>
-
-            <div class="trust-badge-bottom">
-                <span><i class="fas fa-star"></i> 4.9/5 Rating</span>
-                <span><i class="fas fa-heart"></i> 12K+ Couples</span>
-                <span><i class="fas fa-lock"></i> 100% Encrypted</span>
-            </div>
+<div class="auth-container">
+    <div class="auth-left">
+        <div class="brand-large">
+            <a href="index.html" class="logo-icon">
+                <span class="icon-bg"><i class="fas fa-heart"></i></span>
+                <span class="brand-text">
+                    <span class="pro">Pro</span><span class="love">Love</span><span class="hub">Hub</span>
+                </span>
+            </a>
         </div>
+        <div class="hero-text">
+            <h1>Create Your <span class="gold">Account</span></h1>
+            <p>Start your love story today – join thousands of singles finding meaningful connections.</p>
+        </div>
+        <div class="feature-list">
+            <div class="feature-item"><i class="fas fa-brain"></i> Science-backed matching</div>
+            <div class="feature-item"><i class="fas fa-shield-check"></i> Verified &amp; secure</div>
+            <div class="feature-item"><i class="fas fa-gem"></i> Curated daily matches</div>
+        </div>
+        <div class="trust-badge-bottom">
+            <span><i class="fas fa-star"></i> 4.9/5 Rating</span>
+            <span><i class="fas fa-heart"></i> 12K+ Couples</span>
+            <span><i class="fas fa-lock"></i> 100% Encrypted</span>
+        </div>
+    </div>
 
-        <!-- ===== RIGHT PANEL ===== -->
-        <div class="auth-right">
-            <div class="auth-card">
+    <div class="auth-right">
+        <div class="auth-card">
+            <div class="card-header">
+                <h2>Create <span class="highlight">Account</span></h2>
+                <p>Start your love story today.</p>
+            </div>
 
-                <div class="card-header">
-                    <h2>Welcome <span class="highlight">Back</span></h2>
-                    <p>Sign in to continue your journey.</p>
+            <form id="signupForm">
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorText">Something went wrong.</span>
                 </div>
 
-                <!-- Tabs -->
-                <div class="auth-tabs" id="authTabs">
-                    <button class="tab-btn active" data-tab="login">Log In</button>
-                    <button class="tab-btn" data-tab="signup">Sign Up</button>
+                <div class="form-group">
+                    <label>Full Name <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signupName" placeholder="e.g. Jessica Smith" required />
+                    </div>
                 </div>
 
-                <!-- ===== LOGIN FORM ===== -->
-                <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label>Email Address <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signupEmail" placeholder="you@example.com" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Password <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signupPassword" placeholder="Min. 8 characters" required minlength="8" />
+                        <button type="button" class="toggle-password" onclick="togglePassword()"><i class="fas fa-eye" id="toggleIcon"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender <span class="required">*</span></label>
+                    <div class="gender-group">
+                        <input type="radio" name="gender" id="genderMale" value="Male" />
+                        <label for="genderMale"><i class="fas fa-mars"></i> Male</label>
+                        <input type="radio" name="gender" id="genderFemale" value="Female" />
+                        <label for="genderFemale"><i class="fas fa-venus"></i> Female</label>
+                        <input type="radio" name="gender" id="genderOther" value="Other" />
+                        <label for="genderOther"><i class="fas fa-genderless"></i> Other</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Looking for <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-users"></i>
+                        <select id="lookingFor" required>
+                            <option value="" disabled selected>Select preference</option>
+                            <option value="Men">Men</option>
+                            <option value="Women">Women</option>
+                            <option value="Everyone">Everyone</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="loginEmail">Email Address <span class="required">*</span></label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-envelope"></i>
-                            <input type="email" id="loginEmail" placeholder="you@example.com" required />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="loginPassword">Password <span class="required">*</span></label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="loginPassword" placeholder="••••••••" required />
-                            <button type="button" class="toggle-password" onclick="togglePassword('loginPassword', this)"><i class="fas fa-eye"></i></button>
-                        </div>
-                    </div>
-
-                    <div class="form-options">
-                        <label class="remember-me">
-                            <input type="checkbox" checked /> Remember me
-                        </label>
-                        <a href="#" class="forgot-link">Forgot password?</a>
-                    </div>
-
-                    <button type="submit" class="btn-primary">
-                        <i class="fas fa-arrow-right-to-bracket"></i> Log In
-                    </button>
-
-                    <div class="security-badge">
-                        <i class="fas fa-shield-halved"></i> Secure &amp; encrypted connection
-                    </div>
-
-                    <div class="form-footer">
-                        Don't have an account? <a id="goToSignup">Sign Up</a>
-                    </div>
-                </form>
-
-                <!-- ===== SIGNUP FORM ===== -->
-                <form class="auth-form hidden" id="signupForm">
-                    <div class="form-group">
-                        <label for="signupName">Full Name <span class="required">*</span></label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-user"></i>
-                            <input type="text" id="signupName" placeholder="Jessica Smith" required />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="signupEmail">Email Address <span class="required">*</span></label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-envelope"></i>
-                            <input type="email" id="signupEmail" placeholder="you@example.com" required />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="signupPassword">Password <span class="required">*</span></label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="signupPassword" placeholder="Min. 8 characters" required minlength="8" />
-                            <button type="button" class="toggle-password" onclick="togglePassword('signupPassword', this)"><i class="fas fa-eye"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- Gender & Looking For -->
-                    <div class="form-group">
-                        <label>Gender <span class="required">*</span></label>
-                        <div class="gender-group">
-                            <input type="radio" name="gender" id="genderMale" value="male" />
-                            <label for="genderMale"><i class="fas fa-mars"></i> Male</label>
-
-                            <input type="radio" name="gender" id="genderFemale" value="female" />
-                            <label for="genderFemale"><i class="fas fa-venus"></i> Female</label>
-
-                            <input type="radio" name="gender" id="genderOther" value="other" />
-                            <label for="genderOther"><i class="fas fa-genderless"></i> Other</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="lookingFor">Looking for <span class="required">*</span></label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-users"></i>
-                            <select id="lookingFor" required>
-                                <option value="" disabled selected>Select preference</option>
-                                <option value="men">Men</option>
-                                <option value="women">Women</option>
-                                <option value="everyone">Everyone</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="signupDob">Date of Birth <span class="required">*</span></label>
+                        <label>Date of Birth <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <i class="fas fa-calendar"></i>
                             <input type="date" id="signupDob" required />
                         </div>
                     </div>
-
-                    <label class="terms-check">
-                        <input type="checkbox" required />
-                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
-                    </label>
-
-                    <button type="submit" class="btn-primary">
-                        <i class="fas fa-heart"></i> Create Account
-                    </button>
-
-                    <div class="security-badge">
-                        <i class="fas fa-shield-halved"></i> Your data is safe &amp; encrypted
+                    <div class="form-group">
+                        <label>Location</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="signupLocation" placeholder="e.g. Toronto, ON" />
+                        </div>
                     </div>
+                </div>
 
-                    <div class="form-footer">
-                        Already a member? <a id="goToLogin">Log In</a>
+                <div class="form-group">
+                    <label>Bio / About</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-align-left" style="top:18px;transform:none;"></i>
+                        <textarea id="signupBio" placeholder="Tell us about yourself..." style="padding-left:44px;min-height:70px;resize:vertical;width:100%;border-radius:var(--radius-sm);border:1px solid rgba(0,0,0,0.06);background:var(--off-white);font-family:'Inter',sans-serif;font-size:14px;color:var(--text);outline:none;padding:12px 16px 12px 44px;transition:var(--transition);"></textarea>
                     </div>
-                </form>
+                </div>
 
-            </div>
+                <div class="form-group">
+                    <label>Interests (comma separated)</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-tags"></i>
+                        <input type="text" id="signupInterests" placeholder="e.g. Travel, Music, Hiking" />
+                    </div>
+                </div>
+
+                <label class="terms-check">
+                    <input type="checkbox" id="termsCheck" required />
+                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+                </label>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-heart"></i> Create Account
+                </button>
+
+                <div class="security-badge">
+                    <i class="fas fa-shield-halved"></i> Your data is safe &amp; encrypted
+                </div>
+
+                <div class="form-footer">
+                    Already a member? <a href="login.html">Log In</a>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- ===================== JAVASCRIPT ===================== -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+<script type="module">
+import { signUp, signIn, supabase } from './supabase.js';
 
-            // ===== Tab Switching =====
-            const tabs = document.querySelectorAll('.tab-btn');
-            const loginForm = document.getElementById('loginForm');
-            const signupForm = document.getElementById('signupForm');
-            const goToSignup = document.getElementById('goToSignup');
-            const goToLogin = document.getElementById('goToLogin');
+// Toggle password visibility
+window.togglePassword = function() {
+    const input = document.getElementById('signupPassword');
+    const icon = document.getElementById('toggleIcon');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+};
 
-            function switchTab(tabId) {
-                tabs.forEach(tab => {
-                    tab.classList.remove('active');
-                    if (tab.dataset.tab === tabId) tab.classList.add('active');
-                });
-                if (tabId === 'login') {
-                    loginForm.classList.remove('hidden');
-                    signupForm.classList.add('hidden');
-                    document.querySelector('.card-header h2').innerHTML = 'Welcome <span class="highlight">Back</span>';
-                    document.querySelector('.card-header p').textContent = 'Sign in to continue your journey.';
-                } else {
-                    loginForm.classList.add('hidden');
-                    signupForm.classList.remove('hidden');
-                    document.querySelector('.card-header h2').innerHTML = 'Create Your <span class="highlight">Account</span>';
-                    document.querySelector('.card-header p').textContent = 'Start your love story today.';
-                }
+// Handle signup
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const gender = document.querySelector('input[name="gender"]:checked');
+    const lookingFor = document.getElementById('lookingFor').value;
+    const dob = document.getElementById('signupDob').value;
+    const location = document.getElementById('signupLocation').value.trim();
+    const bio = document.getElementById('signupBio').value.trim();
+    const interests = document.getElementById('signupInterests').value.trim();
+    const terms = document.getElementById('termsCheck');
+
+    const errorDiv = document.getElementById('errorMessage');
+    const errorText = document.getElementById('errorText');
+
+    errorDiv.classList.remove('show');
+
+    // Validation
+    if (!name || !email || !password || !gender || !lookingFor || !dob) {
+        errorText.textContent = 'Please fill in all required fields.';
+        errorDiv.classList.add('show');
+        return;
+    }
+    if (!email.includes('@') || !email.includes('.')) {
+        errorText.textContent = 'Please enter a valid email address.';
+        errorDiv.classList.add('show');
+        return;
+    }
+    if (password.length < 8) {
+        errorText.textContent = 'Password must be at least 8 characters.';
+        errorDiv.classList.add('show');
+        return;
+    }
+    if (!terms.checked) {
+        errorText.textContent = 'You must agree to the Terms of Service.';
+        errorDiv.classList.add('show');
+        return;
+    }
+    if (new Date(dob) > new Date(new Date().setFullYear(new Date().getFullYear() - 18))) {
+        errorText.textContent = 'You must be at least 18 years old.';
+        errorDiv.classList.add('show');
+        return;
+    }
+
+    try {
+        // Build profile data
+        const profileData = {
+            name,
+            gender: gender.value,
+            lookingFor,
+            dob,
+            location,
+            bio,
+            interests
+        };
+
+        // Sign up with Supabase
+        const { data, error } = await signUp(email, password, profileData);
+
+        if (error) {
+            if (error.message.includes('already registered')) {
+                errorText.textContent = 'This email is already registered. Please log in.';
+                errorDiv.classList.add('show');
+                return;
             }
+            throw error;
+        }
 
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    switchTab(this.dataset.tab);
-                });
-            });
+        // Auto-login after signup
+        const { data: loginData, error: loginError } = await signIn(email, password);
+        if (loginError) {
+            // If auto-login fails, redirect to login page
+            window.location.href = 'login.html';
+            return;
+        }
 
-            goToSignup.addEventListener('click', (e) => { e.preventDefault();
-                switchTab('signup'); });
-            goToLogin.addEventListener('click', (e) => { e.preventDefault();
-                switchTab('login'); });
+        // Check if user is admin (shouldn't be, but just in case)
+        const { data: member } = await supabase
+            .from('members')
+            .select('source')
+            .eq('id', loginData.user.id)
+            .single();
 
-            // ===== Toggle Password =====
-            window.togglePassword = function(inputId, btn) {
-                const input = document.getElementById(inputId);
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
-                } else {
-                    input.type = 'password';
-                    btn.innerHTML = '<i class="fas fa-eye"></i>';
-                }
-            };
+        if (member && member.source === 'admin') {
+            localStorage.setItem('isAdminLoggedIn', 'true');
+            window.location.href = 'admin-panel.html';
+        } else {
+            // Regular user → redirect to members.html
+            window.location.href = 'members.html';
+        }
 
-            // ===== Login Submit =====
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const email = document.getElementById('loginEmail').value.trim();
-                const password = document.getElementById('loginPassword').value.trim();
-                if (!email || !password) return alert('Please fill in all fields.');
-                if (!email.includes('@') || !email.includes('.')) return alert('Please enter a valid email.');
-                alert('✅ Login successful! Welcome back to ProLoveHub.');
-            });
+    } catch (err) {
+        errorText.textContent = err.message || 'Sign up failed. Please try again.';
+        errorDiv.classList.add('show');
+        console.error('Signup error:', err);
+    }
+});
 
-            // ===== Signup Submit =====
-            signupForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const name = document.getElementById('signupName').value.trim();
-                const email = document.getElementById('signupEmail').value.trim();
-                const password = document.getElementById('signupPassword').value;
-                const gender = document.querySelector('input[name="gender"]:checked');
-                const looking = document.getElementById('lookingFor').value;
-                const dob = document.getElementById('signupDob').value;
-                const terms = document.querySelector('.terms-check input[type="checkbox"]');
-
-                if (!name || !email || !password || !gender || !looking || !dob) {
-                    return alert('Please fill in all required fields.');
-                }
-                if (!email.includes('@') || !email.includes('.')) return alert('Please enter a valid email.');
-                if (password.length < 8) return alert('Password must be at least 8 characters.');
-                if (!terms.checked) return alert('You must agree to the Terms of Service.');
-                if (new Date(dob) > new Date(new Date().setFullYear(new Date().getFullYear() - 18))) {
-                    return alert('You must be at least 18 years old.');
-                }
-
-                alert('🎉 Account created successfully! Welcome to ProLoveHub.');
-            });
-
-            // ===== Forgot Password =====
-            document.querySelector('.forgot-link').addEventListener('click', (e) => {
-                e.preventDefault();
-                alert('📧 Password reset link will be sent to your email.');
-            });
-
-        });
-    </script>
-
+console.log('💜 ProLoveHub Signup loaded.');
+</script>
 </body>
 </html>
