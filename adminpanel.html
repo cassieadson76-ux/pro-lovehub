@@ -4,108 +4,560 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel — ProLoveHub</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js">
+    </script>
     <style>
-        /* Minimal but functional styles */
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:#FAF9FB; color:#2D2A2E; min-height:100vh; }
-        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
-        .navbar { background:#fff; padding:14px 0; box-shadow:0 2px 10px rgba(0,0,0,0.05); border-bottom:1px solid #eee; position:sticky; top:0; z-index:100; }
-        .navbar .container { display:flex; justify-content:space-between; align-items:center; }
-        .navbar .logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
-        .navbar .logo .icon { width:40px; height:40px; background:linear-gradient(135deg,#C2185B,#E85D8A); border-radius:12px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px; }
-        .navbar .logo .brand { font-family:'Playfair Display',serif; font-size:20px; font-weight:800; }
-        .navbar .logo .brand .pro { color:#C2185B; }
-        .navbar .logo .brand .love { color:#1A1423; }
-        .navbar .logo .brand .hub { color:#D4A54A; }
-        .navbar .admin-info { display:flex; align-items:center; gap:16px; }
-        .navbar .admin-info .avatar { width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,#C2185B,#E85D8A); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; }
-        .navbar .admin-info .logout-btn { padding:8px 20px; border:1px solid #ddd; border-radius:50px; background:transparent; cursor:pointer; font-family:'Inter',sans-serif; font-size:13px; font-weight:500; transition:0.3s; }
-        .navbar .admin-info .logout-btn:hover { background:#FFEBEE; color:#C62828; border-color:#C62828; }
-        .stats-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin:24px 0; }
-        .stat-card { background:#fff; padding:16px; border-radius:16px; box-shadow:0 2px 10px rgba(0,0,0,0.04); border:1px solid #eee; text-align:center; }
-        .stat-card .number { font-size:24px; font-weight:800; color:#1A1423; }
-        .stat-card .label { font-size:12px; color:#6B6570; font-weight:500; }
-        .stat-card .icon { font-size:20px; margin-bottom:4px; }
-        .stat-card .icon.primary { color:#C2185B; }
-        .stat-card .icon.gold { color:#D4A54A; }
-        .stat-card .icon.green { color:#4CAF50; }
-        .stat-card .icon.red { color:#e74c3c; }
-        .stat-card .icon.blue { color:#1565C0; }
-        .stat-card .icon.purple { color:#7B1FA2; }
-        .toolbar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; }
-        .toolbar .search-box { display:flex; align-items:center; background:#fff; border-radius:50px; padding:0 16px; border:1px solid #eee; flex:1; max-width:300px; }
-        .toolbar .search-box input { border:none; padding:10px 12px; font-family:'Inter',sans-serif; font-size:14px; background:transparent; flex:1; outline:none; }
-        .toolbar .actions { display:flex; gap:10px; flex-wrap:wrap; }
-        .btn { padding:10px 22px; border-radius:50px; font-family:'Inter',sans-serif; font-size:14px; font-weight:600; border:none; cursor:pointer; transition:0.3s; display:inline-flex; align-items:center; gap:8px; }
-        .btn-primary { background:linear-gradient(135deg,#C2185B,#E85D8A); color:#fff; box-shadow:0 4px 16px rgba(194,24,91,0.25); }
-        .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(194,24,91,0.35); }
-        .btn-secondary { background:#fff; color:#2D2A2E; border:1px solid #ddd; }
-        .btn-secondary:hover { border-color:#C2185B; color:#C2185B; }
-        .btn-danger { background:#e74c3c; color:#fff; }
-        .btn-danger:hover { background:#c0392b; }
-        .btn-success { background:#4CAF50; color:#fff; }
-        .btn-success:hover { background:#388E3C; }
-        .table-container { background:#fff; border-radius:16px; box-shadow:0 2px 10px rgba(0,0,0,0.04); border:1px solid #eee; overflow:hidden; }
-        .table-wrapper { overflow-x:auto; }
-        table { width:100%; border-collapse:collapse; font-size:14px; }
-        table thead { background:#FAF9FB; }
-        table th { padding:12px 16px; text-align:left; font-weight:600; color:#6B6570; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:1px solid #eee; white-space:nowrap; }
-        table td { padding:12px 16px; border-bottom:1px solid #f5f5f5; vertical-align:middle; }
-        table tr:hover td { background:rgba(194,24,91,0.02); }
-        .member-avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:#fff; flex-shrink:0; }
-        .member-info { display:flex; align-items:center; gap:10px; }
-        .member-info .name { font-weight:600; color:#2D2A2E; }
-        .status-badge { display:inline-flex; align-items:center; gap:5px; padding:3px 12px; border-radius:50px; font-size:12px; font-weight:600; }
-        .status-badge.active { background:#E8F5E9; color:#2E7D32; }
-        .status-badge.pending { background:#FFF3E0; color:#E65100; }
-        .status-badge.rejected { background:#FFEBEE; color:#C62828; }
-        .source-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 12px; border-radius:50px; font-size:11px; font-weight:600; }
-        .source-badge.admin { background:#F8E8EE; color:#C2185B; }
-        .source-badge.app { background:#E3F2FD; color:#1565C0; }
-        .action-btns { display:flex; gap:4px; flex-wrap:wrap; }
-        .action-btns button { padding:4px 10px; border:none; border-radius:6px; font-size:12px; cursor:pointer; transition:0.3s; font-family:'Inter',sans-serif; font-weight:500; display:inline-flex; align-items:center; gap:4px; }
-        .action-btns .btn-edit { background:#F8E8EE; color:#C2185B; }
-        .action-btns .btn-edit:hover { background:#C2185B; color:#fff; }
-        .action-btns .btn-reject { background:#FFF3E0; color:#E65100; }
-        .action-btns .btn-reject:hover { background:#E65100; color:#fff; }
-        .action-btns .btn-remove { background:#FFEBEE; color:#C62828; }
-        .action-btns .btn-remove:hover { background:#C62828; color:#fff; }
-        .action-btns .btn-approve { background:#E8F5E9; color:#2E7D32; }
-        .action-btns .btn-approve:hover { background:#2E7D32; color:#fff; }
-        .empty-state { text-align:center; padding:60px 20px; color:#9A94A3; }
-        .empty-state i { font-size:48px; color:#F8E8EE; margin-bottom:16px; }
-        .empty-state h3 { color:#2D2A2E; font-weight:600; }
-        .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(26,20,35,0.5); backdrop-filter:blur(4px); z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; }
-        .modal-overlay.open { display:flex; }
-        .modal { background:#fff; border-radius:16px; max-width:520px; width:100%; padding:32px; max-height:90vh; overflow-y:auto; }
-        .modal .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
-        .modal .modal-header h2 { font-size:22px; font-weight:800; color:#1A1423; }
-        .modal .modal-header h2 .highlight { color:#C2185B; }
-        .modal .modal-close { width:40px; height:40px; border-radius:50%; border:none; background:#FAF9FB; color:#9A94A3; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; }
-        .modal .modal-close:hover { background:#F8E8EE; color:#C2185B; }
-        .modal .form-group { margin-bottom:16px; }
-        .modal .form-group label { display:block; font-size:13px; font-weight:600; color:#2D2A2E; margin-bottom:4px; }
-        .modal .form-group input, .modal .form-group select, .modal .form-group textarea { width:100%; padding:11px 16px; border-radius:10px; border:1px solid #eee; background:#FAF9FB; font-family:'Inter',sans-serif; font-size:14px; color:#2D2A2E; outline:none; transition:0.3s; }
-        .modal .form-group input:focus, .modal .form-group select:focus { border-color:#C2185B; background:#fff; box-shadow:0 0 0 4px rgba(194,24,91,0.06); }
-        .modal .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-        .modal .modal-footer { display:flex; gap:10px; margin-top:24px; padding-top:20px; border-top:1px solid #eee; }
-        .modal .modal-footer .btn { flex:1; justify-content:center; }
-        .toast-container { position:fixed; bottom:24px; right:24px; z-index:2000; display:flex; flex-direction:column; gap:8px; }
-        .toast { padding:14px 24px; border-radius:10px; color:#fff; font-weight:500; font-size:14px; box-shadow:0 8px 32px rgba(0,0,0,0.15); display:flex; align-items:center; gap:10px; min-width:280px; max-width:420px; animation:slideUp 0.3s ease; }
-        .toast.success { background:#2E7D32; }
-        .toast.error { background:#C62828; }
-        .toast.info { background:#8B0E3D; }
-        .toast.warning { background:#E65100; }
-        .toast .toast-close { background:none; border:none; color:rgba(255,255,255,0.7); cursor:pointer; font-size:16px; margin-left:auto; }
-        @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-        @media (max-width:768px) { .stats-grid { grid-template-columns:repeat(3,1fr); } .modal .form-row { grid-template-columns:1fr; } table th:nth-child(4), table td:nth-child(4) { display:none; } }
-        @media (max-width:480px) { .stats-grid { grid-template-columns:1fr 1fr; } .stat-card .number { font-size:18px; } .toolbar { flex-direction:column; align-items:stretch; } .toolbar .search-box { max-width:100%; } .modal .modal-footer { flex-direction:column; } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #FAF9FB;
+            color: #2D2A2E;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #fff;
+            padding: 14px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .navbar .logo .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #C2185B, #E85D8A);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+        }
+        .navbar .logo .brand {
+            font-size: 20px;
+            font-weight: 800;
+        }
+        .navbar .logo .brand .pro {
+            color: #C2185B;
+        }
+        .navbar .logo .brand .love {
+            color: #1A1423;
+        }
+        .navbar .logo .brand .hub {
+            color: #D4A54A;
+        }
+        .navbar .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .navbar .admin-info .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #C2185B, #E85D8A);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+        }
+        .navbar .admin-info .logout-btn {
+            padding: 8px 20px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            background: transparent;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .navbar .admin-info .logout-btn:hover {
+            background: #FFEBEE;
+            color: #C62828;
+            border-color: #C62828;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+        }
+        .stat-card {
+            background: #fff;
+            padding: 16px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eee;
+            text-align: center;
+        }
+        .stat-card .number {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1A1423;
+        }
+        .stat-card .label {
+            font-size: 12px;
+            color: #6B6570;
+            font-weight: 500;
+        }
+        .stat-card .icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        .stat-card .icon.primary {
+            color: #C2185B;
+        }
+        .stat-card .icon.gold {
+            color: #D4A54A;
+        }
+        .stat-card .icon.green {
+            color: #4CAF50;
+        }
+        .stat-card .icon.red {
+            color: #e74c3c;
+        }
+        .stat-card .icon.blue {
+            color: #1565C0;
+        }
+        .stat-card .icon.purple {
+            color: #7B1FA2;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .toolbar .search-box {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 50px;
+            padding: 0 16px;
+            border: 1px solid #eee;
+            flex: 1;
+            max-width: 300px;
+        }
+        .toolbar .search-box input {
+            border: none;
+            padding: 10px 12px;
+            font-size: 14px;
+            background: transparent;
+            flex: 1;
+            outline: none;
+        }
+        .toolbar .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #C2185B, #E85D8A);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(194, 24, 91, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(194, 24, 91, 0.35);
+        }
+        .btn-secondary {
+            background: #fff;
+            color: #2D2A2E;
+            border: 1px solid #ddd;
+        }
+        .btn-secondary:hover {
+            border-color: #C2185B;
+            color: #C2185B;
+        }
+
+        /* Table */
+        .table-container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eee;
+            overflow: hidden;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        table thead {
+            background: #FAF9FB;
+        }
+        table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #6B6570;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #eee;
+            white-space: nowrap;
+        }
+        table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f5f5f5;
+            vertical-align: middle;
+        }
+        table tr:hover td {
+            background: rgba(194, 24, 91, 0.02);
+        }
+        .member-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .member-info .name {
+            font-weight: 600;
+            color: #2D2A2E;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-badge.active {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        .status-badge.pending {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+        .status-badge.rejected {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+        .source-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .source-badge.admin {
+            background: #F8E8EE;
+            color: #C2185B;
+        }
+        .source-badge.app {
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+        .action-btns {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .action-btns button {
+            padding: 4px 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .action-btns .btn-edit {
+            background: #F8E8EE;
+            color: #C2185B;
+        }
+        .action-btns .btn-edit:hover {
+            background: #C2185B;
+            color: #fff;
+        }
+        .action-btns .btn-reject {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+        .action-btns .btn-reject:hover {
+            background: #E65100;
+            color: #fff;
+        }
+        .action-btns .btn-remove {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+        .action-btns .btn-remove:hover {
+            background: #C62828;
+            color: #fff;
+        }
+        .action-btns .btn-approve {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        .action-btns .btn-approve:hover {
+            background: #2E7D32;
+            color: #fff;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #9A94A3;
+        }
+        .empty-state i {
+            font-size: 48px;
+            color: #F8E8EE;
+            margin-bottom: 16px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 20, 35, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            max-width: 520px;
+            width: 100%;
+            padding: 32px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .modal .modal-header h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1A1423;
+        }
+        .modal .modal-header h2 .highlight {
+            color: #C2185B;
+        }
+        .modal .modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: #FAF9FB;
+            color: #9A94A3;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal .modal-close:hover {
+            background: #F8E8EE;
+            color: #C2185B;
+        }
+        .modal .form-group {
+            margin-bottom: 16px;
+        }
+        .modal .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2D2A2E;
+            margin-bottom: 4px;
+        }
+        .modal .form-group input,
+        .modal .form-group select,
+        .modal .form-group textarea {
+            width: 100%;
+            padding: 11px 16px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            background: #FAF9FB;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .modal .form-group input:focus,
+        .modal .form-group select:focus {
+            border-color: #C2185B;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.06);
+        }
+        .modal .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .modal .modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .modal .modal-footer .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            padding: 14px 24px;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 500;
+            font-size: 14px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 280px;
+            max-width: 420px;
+            animation: slideUp 0.3s ease;
+        }
+        .toast.success {
+            background: #2E7D32;
+        }
+        .toast.error {
+            background: #C62828;
+        }
+        .toast.info {
+            background: #8B0E3D;
+        }
+        .toast.warning {
+            background: #E65100;
+        }
+        .toast .toast-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: auto;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .modal .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stat-card .number {
+                font-size: 18px;
+            }
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .toolbar .search-box {
+                max-width: 100%;
+            }
+            .modal .modal-footer {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
             <a href="#" class="logo">
@@ -115,12 +567,13 @@
             <div class="admin-info">
                 <span style="font-size:13px;color:#6B6570;">Admin Panel</span>
                 <div class="avatar">AD</div>
-                <button class="logout-btn" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
         </div>
     </nav>
 
     <div class="container">
+        <!-- Stats -->
         <div class="stats-grid" id="statsGrid">
             <div class="stat-card"><div class="icon primary"><i class="fas fa-users"></i></div><div class="number" id="totalMembers">0</div><div class="label">Total</div></div>
             <div class="stat-card"><div class="icon gold"><i class="fas fa-user-check"></i></div><div class="number" id="activeMembers">0</div><div class="label">Active</div></div>
@@ -130,36 +583,50 @@
             <div class="stat-card"><div class="icon purple"><i class="fas fa-mobile-alt"></i></div><div class="number" id="appSignupCount">0</div><div class="label">App Sign-ups</div></div>
         </div>
 
+        <!-- Toolbar -->
         <div class="toolbar">
             <div class="search-box">
                 <i class="fas fa-search" style="color:#9A94A3;"></i>
                 <input type="text" id="searchInput" placeholder="Search members..." />
             </div>
             <div class="actions">
-                <button class="btn btn-primary" onclick="openAddModal()"><i class="fas fa-plus"></i> Add Member</button>
-                <button class="btn btn-secondary" onclick="resetFilters()"><i class="fas fa-undo"></i> Reset</button>
+                <button class="btn btn-primary" id="addMemberBtn"><i class="fas fa-plus"></i> Add Member</button>
+                <button class="btn btn-secondary" id="resetBtn"><i class="fas fa-undo"></i> Reset</button>
             </div>
         </div>
 
+        <!-- Table -->
         <div class="table-container">
             <div class="table-wrapper">
                 <table>
                     <thead>
-                        <tr><th>#</th><th>Member</th><th>Email</th><th>Gender</th><th>Looking For</th><th>Status</th><th>Source</th><th>Actions</th></tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Member</th>
+                            <th>Email</th>
+                            <th>Gender</th>
+                            <th>Looking For</th>
+                            <th>Status</th>
+                            <th>Source</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody id="membersTableBody">
-                        <tr><td colspan="8"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><h3>Loading members...</h3></div></td></tr>
+                        <tr>
+                            <td colspan="8"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><h3>Loading members...</h3></div></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <!-- Modal -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
                 <h2 id="modalTitle">Add <span class="highlight">Member</span></h2>
-                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+                <button class="modal-close" id="closeModalBtn"><i class="fas fa-times"></i></button>
             </div>
             <form id="memberForm">
                 <input type="hidden" id="editId" />
@@ -177,16 +644,16 @@
                 <div class="form-group"><label>Interests (comma separated)</label><input type="text" id="formInterests" placeholder="Travel, Music, Hiking" /></div>
                 <div class="form-group"><label>Status</label><select id="formStatus"><option value="active">Active</option><option value="pending" selected>Pending</option><option value="rejected">Rejected</option></select></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-secondary" id="cancelModalBtn">Cancel</button>
                     <button type="submit" class="btn btn-primary" id="formSubmitBtn"><i class="fas fa-save"></i> Save Member</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const SUPABASE_URL = 'https://precvldulohwudpfmzsn.supabase.co';
@@ -197,26 +664,67 @@
             let currentFilter = 'all';
             let searchQuery = '';
 
+            // DOM refs
+            const tbody = document.getElementById('membersTableBody');
+            const searchInput = document.getElementById('searchInput');
+            const modal = document.getElementById('modalOverlay');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const cancelModalBtn = document.getElementById('cancelModalBtn');
+            const addMemberBtn = document.getElementById('addMemberBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const memberForm = document.getElementById('memberForm');
+            const editId = document.getElementById('editId');
+            const modalTitle = document.getElementById('modalTitle');
+            const formSubmitBtn = document.getElementById('formSubmitBtn');
+
+            // Toast helper
+            function showToast(msg, type = 'info') {
+                const container = document.getElementById('toastContainer');
+                const div = document.createElement('div');
+                div.className = 'toast ' + type;
+                div.innerHTML = msg + '<button class="toast-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
+                container.appendChild(div);
+                setTimeout(() => div.remove(), 4000);
+            }
+
+            // Check admin session
             async function checkAdmin() {
                 const { data: { user } } = await supabaseClient.auth.getUser();
-                if (!user) { window.location.href = 'admin-login.html'; return false; }
+                if (!user) {
+                    window.location.href = 'admin-login.html';
+                    return false;
+                }
                 const { data: member } = await supabaseClient.from('members').select('source').eq('id', user.id).single();
                 if (!member || member.source !== 'admin') {
                     alert('Access denied. Admin privileges required.');
-                    window.location.href = 'loginpage.html';
+                    window.location.href = 'index.html';
                     return false;
                 }
                 return true;
             }
 
+            // Load members
             async function loadMembers() {
                 const { data, error } = await supabaseClient.from('members').select('*').order('created_at', { ascending: false });
-                if (error) { showToast('Error loading members: ' + error.message, 'error'); return; }
+                if (error) {
+                    showToast('Error loading members: ' + error.message, 'error');
+                    return;
+                }
                 members = data || [];
                 render();
             }
 
+            // Render
             function render() {
+                // Stats
+                document.getElementById('totalMembers').textContent = members.length;
+                document.getElementById('activeMembers').textContent = members.filter(m => m.status === 'active').length;
+                document.getElementById('pendingMembers').textContent = members.filter(m => m.status === 'pending').length;
+                document.getElementById('rejectedMembers').textContent = members.filter(m => m.status === 'rejected').length;
+                document.getElementById('adminAddedCount').textContent = members.filter(m => m.source === 'admin').length;
+                document.getElementById('appSignupCount').textContent = members.filter(m => m.source === 'app').length;
+
+                // Filter
                 let filtered = [...members];
                 if (currentFilter === 'pending') filtered = filtered.filter(m => m.status === 'pending');
                 else if (currentFilter === 'rejected') filtered = filtered.filter(m => m.status === 'rejected');
@@ -225,148 +733,64 @@
                     const q = searchQuery.trim().toLowerCase();
                     filtered = filtered.filter(m => m.name.toLowerCase().includes(q) || m.email.toLowerCase().includes(q));
                 }
-                document.getElementById('totalMembers').textContent = members.length;
-                document.getElementById('activeMembers').textContent = members.filter(m => m.status === 'active').length;
-                document.getElementById('pendingMembers').textContent = members.filter(m => m.status === 'pending').length;
-                document.getElementById('rejectedMembers').textContent = members.filter(m => m.status === 'rejected').length;
-                document.getElementById('adminAddedCount').textContent = members.filter(m => m.source === 'admin').length;
-                document.getElementById('appSignupCount').textContent = members.filter(m => m.source === 'app').length;
 
-                const tbody = document.getElementById('membersTableBody');
                 if (filtered.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><i class="fas fa-users-slash"></i><h3>No members found</h3></div></td></tr>`;
                     return;
                 }
-                const colors = ['#C2185B','#D4A54A','#4CAF50','#7B1FA2','#00695C','#E65100'];
+
+                const colors = ['#C2185B', '#D4A54A', '#4CAF50', '#7B1FA2', '#00695C', '#E65100'];
                 let html = '';
                 filtered.forEach((m, i) => {
-                    const initials = m.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+                    const initials = m.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
                     const color = colors[i % colors.length];
-                    const statusMap = {
-                        active: '<span class="status-badge active"><i class="fas fa-circle" style="font-size:8px;"></i> Active</span>',
-                        pending: '<span class="status-badge pending"><i class="fas fa-clock" style="font-size:8px;"></i> Pending</span>',
-                        rejected: '<span class="status-badge rejected"><i class="fas fa-times-circle" style="font-size:8px;"></i> Rejected</span>'
-                    };
-                    const sourceMap = {
-                        admin: '<span class="source-badge admin"><i class="fas fa-user-cog"></i> Admin</span>',
-                        app: '<span class="source-badge app"><i class="fas fa-mobile-alt"></i> App</span>'
-                    };
+                    const statusClass = m.status || 'pending';
+                    const sourceClass = (m.source === 'admin') ? 'source-badge admin' : 'source-badge app';
                     html += `<tr>
-                        <td>${i+1}</td>
-                        <td><div class="member-info"><div class="member-avatar" style="background:${color};">${initials}</div><div><div class="name">${escapeHtml(m.name)}</div></div></div></td>
-                        <td style="font-size:13px;color:#6B6570;">${escapeHtml(m.email)}</td>
-                        <td>${escapeHtml(m.gender||'—')}</td>
-                        <td>${escapeHtml(m.lookingFor||'—')}</td>
-                        <td>${statusMap[m.status]||statusMap.pending}</td>
-                        <td>${sourceMap[m.source]||sourceMap.admin}</td>
+                        <td>${i + 1}</td>
+                        <td><div class="member-info"><div class="member-avatar" style="background:${color};">${initials}</div><div class="name">${escapeHtml(m.name)}</div></div></td>
+                        <td>${escapeHtml(m.email)}</td>
+                        <td>${escapeHtml(m.gender || '—')}</td>
+                        <td>${escapeHtml(m.lookingFor || '—')}</td>
+                        <td><span class="status-badge ${statusClass}">${statusClass}</span></td>
+                        <td><span class="${sourceClass}">${m.source || 'app'}</span></td>
                         <td><div class="action-btns">
-                            ${m.status==='pending'||m.status==='rejected'?`<button class="btn-approve" onclick="window.approveMember('${m.id}')"><i class="fas fa-check"></i> Approve</button>`:''}
-                            <button class="btn-edit" onclick="window.openEditModal('${m.id}')"><i class="fas fa-pen"></i> Edit</button>
-                            ${m.status!=='rejected'?`<button class="btn-reject" onclick="window.rejectMember('${m.id}')"><i class="fas fa-times"></i> Reject</button>`:''}
-                            <button class="btn-remove" onclick="window.removeMember('${m.id}')"><i class="fas fa-trash"></i> Remove</button>
+                            ${m.status === 'pending' || m.status === 'rejected' ? `<button class="btn-approve" data-id="${m.id}" data-action="approve"><i class="fas fa-check"></i> Approve</button>` : ''}
+                            <button class="btn-edit" data-id="${m.id}" data-action="edit"><i class="fas fa-pen"></i> Edit</button>
+                            ${m.status !== 'rejected' ? `<button class="btn-reject" data-id="${m.id}" data-action="reject"><i class="fas fa-times"></i> Reject</button>` : ''}
+                            <button class="btn-remove" data-id="${m.id}" data-action="remove"><i class="fas fa-trash"></i> Remove</button>
                         </div></td>
                     </tr>`;
                 });
                 tbody.innerHTML = html;
-            }
 
-            window.approveMember = async (id) => {
-                const { error } = await supabaseClient.from('members').update({ status:'active' }).eq('id',id);
-                if (error) showToast('Error: '+error.message,'error'); else { showToast('Member approved!','success'); loadMembers(); }
-            };
-            window.rejectMember = async (id) => {
-                if (!confirm('Reject this member?')) return;
-                const { error } = await supabaseClient.from('members').update({ status:'rejected' }).eq('id',id);
-                if (error) showToast('Error: '+error.message,'error'); else { showToast('Member rejected.','warning'); loadMembers(); }
-            };
-            window.removeMember = async (id) => {
-                if (!confirm('Remove this member permanently?')) return;
-                const { error } = await supabaseClient.from('members').delete().eq('id',id);
-                if (error) showToast('Error: '+error.message,'error'); else { showToast('Member removed.','error'); loadMembers(); }
-            };
-            window.openEditModal = (id) => {
-                const member = members.find(m=>m.id===id);
-                if (!member) return;
-                document.getElementById('editId').value=id;
-                document.getElementById('formName').value=member.name;
-                document.getElementById('formEmail').value=member.email;
-                document.getElementById('formGender').value=member.gender||'';
-                document.getElementById('formLookingFor').value=member.lookingFor||'';
-                document.getElementById('formDob').value=member.dob||'';
-                document.getElementById('formLocation').value=member.location||'';
-                document.getElementById('formBio').value=member.bio||'';
-                document.getElementById('formInterests').value=(member.interests||[]).join(', ');
-                document.getElementById('formStatus').value=member.status||'pending';
-                document.getElementById('modalTitle').innerHTML='Edit <span class="highlight">Member</span>';
-                document.getElementById('formSubmitBtn').innerHTML='<i class="fas fa-save"></i> Update Member';
-                document.getElementById('modalOverlay').classList.add('open');
-            };
-            window.openAddModal = () => {
-                document.getElementById('editId').value='';
-                document.getElementById('formName').value='';
-                document.getElementById('formEmail').value='';
-                document.getElementById('formGender').value='';
-                document.getElementById('formLookingFor').value='';
-                document.getElementById('formDob').value='';
-                document.getElementById('formLocation').value='';
-                document.getElementById('formBio').value='';
-                document.getElementById('formInterests').value='';
-                document.getElementById('formStatus').value='pending';
-                document.getElementById('modalTitle').innerHTML='Add <span class="highlight">Member</span>';
-                document.getElementById('formSubmitBtn').innerHTML='<i class="fas fa-plus"></i> Add Member';
-                document.getElementById('modalOverlay').classList.add('open');
-            };
-            window.closeModal = () => { document.getElementById('modalOverlay').classList.remove('open'); };
-
-            document.getElementById('memberForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const editId = document.getElementById('editId').value;
-                const data = {
-                    name: document.getElementById('formName').value.trim(),
-                    email: document.getElementById('formEmail').value.trim(),
-                    gender: document.getElementById('formGender').value,
-                    lookingFor: document.getElementById('formLookingFor').value,
-                    dob: document.getElementById('formDob').value,
-                    location: document.getElementById('formLocation').value.trim(),
-                    bio: document.getElementById('formBio').value.trim(),
-                    interests: document.getElementById('formInterests').value.trim(),
-                    status: document.getElementById('formStatus').value
-                };
-                if (!data.name||!data.email||!data.gender||!data.lookingFor) {
-                    showToast('Please fill in all required fields.','error'); return;
-                }
-                let result;
-                if (editId) {
-                    result = await supabaseClient.from('members').update(data).eq('id',editId);
-                } else {
-                    result = await supabaseClient.from('members').insert([{...data, source:'admin'}]);
-                }
-                if (result.error) showToast('Error: '+result.error.message,'error');
-                else { showToast(editId?'Member updated!':'Member added!','success'); closeModal(); loadMembers(); }
-            });
-
-            document.getElementById('searchInput').addEventListener('input', function() {
-                searchQuery = this.value; render();
-            });
-            window.resetFilters = () => {
-                searchQuery=''; currentFilter='all'; document.getElementById('searchInput').value=''; render();
-            };
-
-            window.handleLogout = async () => {
-                if (!confirm('Logout?')) return;
-                await supabaseClient.auth.signOut();
-                localStorage.removeItem('isAdminLoggedIn');
-                window.location.href = 'index.html';
-            };
-
-            function showToast(message, type='info') {
-                const container = document.getElementById('toastContainer');
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
-                const icons = { success:'fa-check-circle', error:'fa-exclamation-circle', warning:'fa-triangle-exclamation', info:'fa-info-circle' };
-                toast.innerHTML = `<i class="fas ${icons[type]||icons.info}"></i><span>${message}</span><button class="toast-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
-                container.appendChild(toast);
-                setTimeout(()=>toast.remove(), 4000);
+                // Attach action listeners
+                document.querySelectorAll('[data-action]').forEach(btn => {
+                    btn.addEventListener('click', async function(e) {
+                        const id = this.dataset.id;
+                        const action = this.dataset.action;
+                        if (action === 'approve') {
+                            const { error } = await supabaseClient.from('members').update({ status: 'active' }).eq('id', id);
+                            if (error) showToast('Error: ' + error.message, 'error');
+                            else { showToast('Member approved!', 'success');
+                                loadMembers(); }
+                        } else if (action === 'reject') {
+                            if (!confirm('Reject this member?')) return;
+                            const { error } = await supabaseClient.from('members').update({ status: 'rejected' }).eq('id', id);
+                            if (error) showToast('Error: ' + error.message, 'error');
+                            else { showToast('Member rejected.', 'warning');
+                                loadMembers(); }
+                        } else if (action === 'remove') {
+                            if (!confirm('Remove this member permanently?')) return;
+                            const { error } = await supabaseClient.from('members').delete().eq('id', id);
+                            if (error) showToast('Error: ' + error.message, 'error');
+                            else { showToast('Member removed.', 'error');
+                                loadMembers(); }
+                        } else if (action === 'edit') {
+                            openEditModal(id);
+                        }
+                    });
+                });
             }
 
             function escapeHtml(text) {
@@ -376,9 +800,114 @@
                 return div.innerHTML;
             }
 
+            // Open edit modal
+            function openEditModal(id) {
+                const member = members.find(m => m.id === id);
+                if (!member) return;
+                editId.value = id;
+                document.getElementById('formName').value = member.name;
+                document.getElementById('formEmail').value = member.email;
+                document.getElementById('formGender').value = member.gender || '';
+                document.getElementById('formLookingFor').value = member.lookingFor || '';
+                document.getElementById('formDob').value = member.dob || '';
+                document.getElementById('formLocation').value = member.location || '';
+                document.getElementById('formBio').value = member.bio || '';
+                document.getElementById('formInterests').value = (member.interests || []).join(', ');
+                document.getElementById('formStatus').value = member.status || 'pending';
+                modalTitle.textContent = 'Edit Member';
+                formSubmitBtn.textContent = 'Update Member';
+                modal.classList.add('open');
+            }
+
+            // Open add modal
+            function openAddModal() {
+                editId.value = '';
+                document.getElementById('formName').value = '';
+                document.getElementById('formEmail').value = '';
+                document.getElementById('formGender').value = '';
+                document.getElementById('formLookingFor').value = '';
+                document.getElementById('formDob').value = '';
+                document.getElementById('formLocation').value = '';
+                document.getElementById('formBio').value = '';
+                document.getElementById('formInterests').value = '';
+                document.getElementById('formStatus').value = 'pending';
+                modalTitle.textContent = 'Add Member';
+                formSubmitBtn.textContent = 'Add Member';
+                modal.classList.add('open');
+            }
+
+            // Close modal
+            function closeModal() {
+                modal.classList.remove('open');
+            }
+
+            // Form submit
+            memberForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const id = editId.value;
+                const data = {
+                    name: document.getElementById('formName').value.trim(),
+                    email: document.getElementById('formEmail').value.trim(),
+                    gender: document.getElementById('formGender').value,
+                    lookingFor: document.getElementById('formLookingFor').value,
+                    dob: document.getElementById('formDob').value,
+                    location: document.getElementById('formLocation').value.trim(),
+                    bio: document.getElementById('formBio').value.trim(),
+                    interests: document.getElementById('formInterests').value.trim().split(',').map(s => s.trim())
+                        .filter(Boolean),
+                    status: document.getElementById('formStatus').value
+                };
+                if (!data.name || !data.email || !data.gender || !data.lookingFor) {
+                    showToast('Please fill in all required fields.', 'error');
+                    return;
+                }
+                let result;
+                if (id) {
+                    result = await supabaseClient.from('members').update(data).eq('id', id);
+                } else {
+                    result = await supabaseClient.from('members').insert([{ ...data,
+                        source: 'admin' }]);
+                }
+                if (result.error) {
+                    showToast('Error: ' + result.error.message, 'error');
+                } else {
+                    showToast(id ? 'Member updated!' : 'Member added!', 'success');
+                    closeModal();
+                    loadMembers();
+                }
+            });
+
+            // Event listeners
+            addMemberBtn.addEventListener('click', openAddModal);
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+
+            searchInput.addEventListener('input', function() {
+                searchQuery = this.value;
+                render();
+            });
+
+            resetBtn.addEventListener('click', function() {
+                searchQuery = '';
+                currentFilter = 'all';
+                searchInput.value = '';
+                render();
+            });
+
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', async function() {
+                if (confirm('Logout?')) {
+                    await supabaseClient.auth.signOut();
+                    localStorage.removeItem('isAdminLoggedIn');
+                    window.location.href = 'index.html';
+                }
+            });
+
+            // Init
             (async function init() {
-                const isAdmin = await checkAdmin();
-                if (isAdmin) {
+                const ok = await checkAdmin();
+                if (ok) {
                     await loadMembers();
                     console.log('🔐 ProLoveHub Admin Panel loaded.');
                 }
