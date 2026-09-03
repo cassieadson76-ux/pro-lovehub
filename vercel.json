@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/admin-panel.html",
+      "destination": "/admin-panel.html"
+    },
+    {
+      "source": "/admin-login.html",
+      "destination": "/admin-login.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
