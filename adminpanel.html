@@ -434,18 +434,52 @@
             </div>
             <form id="memberForm">
                 <input type="hidden" id="editId" />
-                <div class="form-group"><label>Full Name <span style="color:var(--primary);">*</span></label><input type="text" id="formName" placeholder="e.g. Jessica Smith" required /></div>
-                <div class="form-group"><label>Email <span style="color:var(--primary);">*</span></label><input type="email" id="formEmail" placeholder="you@example.com" required /></div>
-                <div class="form-row">
-                    <div class="form-group"><label>Gender <span style="color:var(--primary);">*</span></label><select id="formGender" required><option value="">Select</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select></div>
-                    <div class="form-group"><label>Looking For <span style="color:var(--primary);">*</span></label><select id="formLookingFor" required><option value="">Select</option><option value="Men">Men</option><option value="Women">Women</option><option value="Everyone">Everyone</option></select></div>
+                <div class="form-group">
+                    <label>Full Name <span style="color:var(--primary);">*</span></label>
+                    <input type="text" id="formName" placeholder="e.g. Jessica Smith" required />
+                </div>
+                <div class="form-group">
+                    <label>Email <span style="color:var(--primary);">*</span></label>
+                    <input type="email" id="formEmail" placeholder="you@example.com" required />
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label>Date of Birth</label><input type="date" id="formDob" /></div>
-                    <div class="form-group"><label>Location</label><input type="text" id="formLocation" placeholder="Toronto, ON" /></div>
+                    <div class="form-group">
+                        <label>Gender <span style="color:var(--primary);">*</span></label>
+                        <select id="formGender" required>
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Looking For <span style="color:var(--primary);">*</span></label>
+                        <select id="formLookingFor" required>
+                            <option value="">Select</option>
+                            <option value="Men">Men</option>
+                            <option value="Women">Women</option>
+                            <option value="Everyone">Everyone</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group"><label>Bio</label><textarea id="formBio" placeholder="About this member..." rows="3"></textarea></div>
-                <div class="form-group"><label>Interests (comma separated)</label><input type="text" id="formInterests" placeholder="Travel, Music, Hiking" /></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" id="formDob" />
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="formLocation" placeholder="Toronto, ON" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Bio</label>
+                    <textarea id="formBio" placeholder="About this member..." rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Interests (comma separated)</label>
+                    <input type="text" id="formInterests" placeholder="Travel, Music, Hiking" />
+                </div>
 
                 <!-- Photo Upload -->
                 <div class="form-group">
@@ -460,7 +494,14 @@
                     <input type="hidden" id="formPhotoUrl" />
                 </div>
 
-                <div class="form-group"><label>Status</label><select id="formStatus"><option value="active">Active</option><option value="pending" selected>Pending</option><option value="rejected">Rejected</option></select></div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="formStatus">
+                        <option value="active">Active</option>
+                        <option value="pending" selected>Pending</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="cancelModalBtn">Cancel</button>
                     <button type="submit" class="btn btn-primary" id="formSubmitBtn"><i class="fas fa-save"></i> Save Member</button>
