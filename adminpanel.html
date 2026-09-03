@@ -793,8 +793,8 @@
                     dob: document.getElementById('formDob').value || null,
                     location: document.getElementById('formLocation').value.trim() || null,
                     bio: document.getElementById('formBio').value.trim() || null,
-                    interests: document.getElementById('formInterests').value.trim() ? document.getElementById('formInterests').value.trim().split(',').map(function(s) { return s
-                            .trim(); }).filter(function(s) { return s; }) : [],
+                    interests: document.getElementById('formInterests').value.trim() ? document.getElementById('formInterests')
+                        .value.trim().split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; }) : [],
                     status: document.getElementById('formStatus').value
                 };
 
