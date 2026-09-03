@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account — ProLoveHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f0f2;
+            background-image: radial-gradient(circle at 20% 50%, rgba(194, 24, 91, 0.04) 0%, transparent 60%),
+                              radial-gradient(circle at 80% 30%, rgba(212, 165, 74, 0.04) 0%, transparent 50%);
+            padding: 20px;
+        }
+
+        .signup-wrapper {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 40px 80px rgba(26, 20, 35, 0.12), 0 8px 24px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+
+        /* ===== LEFT PANEL ===== */
+        .signup-brand {
+            flex: 1;
+            padding: 48px 40px;
+            background: linear-gradient(145deg, #1A1423 0%, #2D2840 50%, #3A2A4A 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        .signup-brand::before {
+            content: '❤';
+            position: absolute;
+            font-size: 300px;
+            opacity: 0.04;
+            top: -40px;
+            right: -40px;
+            font-family: 'Playfair Display', serif;
+            pointer-events: none;
+        }
+
+        .signup-brand .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .signup-brand .logo .icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #D4A54A;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .signup-brand .logo .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .signup-brand .logo .brand .pro { color: #FFB6C1; }
+        .signup-brand .logo .brand .love { color: #fff; }
+        .signup-brand .logo .brand .hub { color: #D4A54A; }
+
+        .signup-brand .tagline {
+            font-size: 14px;
+            opacity: 0.6;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .signup-brand .hero-text {
+            position: relative;
+            z-index: 2;
+            max-width: 360px;
+        }
+
+        .signup-brand .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .signup-brand .hero-text h1 .gold { color: #D4A54A; }
+        .signup-brand .hero-text p {
+            font-size: 16px;
+            opacity: 0.7;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .signup-brand .features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .signup-brand .features .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .signup-brand .features .feature i {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: #D4A54A;
+        }
+
+        .signup-brand .trust-badges {
+            display: flex;
+            gap: 28px;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            flex-wrap: wrap;
+        }
+
+        .signup-brand .trust-badges span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            opacity: 0.6;
+        }
+
+        .signup-brand .trust-badges span i { color: #D4A54A; }
+
+        /* ===== RIGHT PANEL ===== */
+        .signup-form-panel {
+            flex: 1;
+            padding: 36px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #fff;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .signup-form-panel .header {
+            margin-bottom: 18px;
+        }
+
+        .signup-form-panel .header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: #1A1423;
+        }
+
+        .signup-form-panel .header h2 .highlight { color: #C2185B; }
+        .signup-form-panel .header p {
+            color: #6B6570;
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
+        .signup-form-panel .form-group {
+            margin-bottom: 12px;
+        }
+
+        .signup-form-panel .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2D2A2E;
+            margin-bottom: 3px;
+        }
+
+        .signup-form-panel .form-group label .required { color: #C2185B; }
+
+        .signup-form-panel .form-group .input-wrapper {
+            position: relative;
+        }
+
+        .signup-form-panel .form-group .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9A94A3;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .signup-form-panel .form-group .input-wrapper input,
+        .signup-form-panel .form-group .input-wrapper select,
+        .signup-form-panel .form-group .input-wrapper textarea {
+            width: 100%;
+            padding: 10px 16px 10px 44px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: #FAF9FB;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #2D2A2E;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .signup-form-panel .form-group .input-wrapper select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B6570' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+
+        .signup-form-panel .form-group .input-wrapper textarea {
+            padding-top: 12px;
+            resize: vertical;
+            min-height: 55px;
+        }
+
+        .signup-form-panel .form-group .input-wrapper input:focus,
+        .signup-form-panel .form-group .input-wrapper select:focus,
+        .signup-form-panel .form-group .input-wrapper textarea:focus {
+            border-color: #C2185B;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.06);
+        }
+
+        .signup-form-panel .form-group .input-wrapper input:focus + i,
+        .signup-form-panel .form-group .input-wrapper select:focus + i,
+        .signup-form-panel .form-group .input-wrapper textarea:focus + i {
+            color: #C2185B;
+        }
+
+        .signup-form-panel .form-group .input-wrapper .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9A94A3;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .gender-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .gender-group label {
+            flex: 1;
+            text-align: center;
+            padding: 8px 6px;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 0, 0, 0.06);
+            background: #FAF9FB;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6B6570;
+            transition: 0.3s;
+            margin-bottom: 0;
+        }
+
+        .gender-group label i { margin-right: 4px; }
+        .gender-group input[type="radio"] { display: none; }
+        .gender-group input[type="radio"]:checked + label {
+            border-color: #C2185B;
+            background: #F8E8EE;
+            color: #C2185B;
+        }
+        .gender-group label:hover { border-color: #C2185B; background: #F8E8EE; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .terms-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            color: #6B6570;
+            margin: 10px 0 14px;
+            cursor: pointer;
+        }
+
+        .terms-check input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
+            accent-color: #C2185B;
+            margin-top: 2px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .terms-check a { color: #C2185B; font-weight: 600; text-decoration: none; }
+        .terms-check a:hover { text-decoration: underline; }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #C2185B, #E85D8A);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 8px 30px rgba(194, 24, 91, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(194, 24, 91, 0.4);
+        }
+
+        .error-message {
+            background: #FFEBEE;
+            color: #C62828;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-message.show { display: flex; }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #9A94A3;
+        }
+
+        .security-badge i { color: #4CAF50; font-size: 14px; }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 14px;
+            color: #6B6570;
+        }
+
+        .form-footer a {
+            color: #C2185B;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover { text-decoration: underline; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 820px) {
+            .signup-wrapper { flex-direction: column; max-width: 480px; border-radius: 24px; }
+            .signup-brand { padding: 32px 28px; min-height: 200px; }
+            .signup-brand .hero-text h1 { font-size: 28px; }
+            .signup-form-panel { padding: 24px 20px; max-height: none; }
+            .signup-brand .hero-text { max-width: 100%; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .signup-brand { padding: 20px 16px; }
+            .signup-form-panel { padding: 16px; }
+            .gender-group { flex-wrap: wrap; }
+            .gender-group label { flex: 1 0 30%; }
+            .signup-brand .logo .brand { font-size: 22px; }
+            .signup-form-panel .header h2 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="signup-wrapper">
+    <!-- ===== LEFT PANEL ===== -->
+    <div class="signup-brand">
+        <a href="index.html" class="logo">
+            <div class="icon"><i class="fas fa-heart"></i></div>
+            <div>
+                <span class="brand">
+                    <span class="pro">Pro</span><span class="love">Love</span><span class="hub">Hub</span>
+                </span>
+                <div class="tagline">Premium Matchmaking</div>
+            </div>
+        </a>
+
+        <div class="hero-text">
+            <h1>Create Your <span class="gold">Account</span></h1>
+            <p>Start your love story today with science-backed matching.</p>
+        </div>
+
+        <div class="features">
+            <div class="feature"><i class="fas fa-brain"></i> Science-backed matching</div>
+            <div class="feature"><i class="fas fa-shield-check"></i> Verified &amp; secure</div>
+            <div class="feature"><i class="fas fa-gem"></i> Curated daily matches</div>
+        </div>
+
+        <div class="trust-badges">
+            <span><i class="fas fa-star"></i> 4.9/5 Rating</span>
+            <span><i class="fas fa-heart"></i> 12K+ Couples</span>
+            <span><i class="fas fa-lock"></i> 100% Encrypted</span>
+        </div>
+    </div>
+
+    <!-- ===== RIGHT PANEL ===== -->
+    <div class="signup-form-panel">
+        <div class="header">
+            <h2>Create <span class="highlight">Account</span></h2>
+            <p>Start your love story today.</p>
+        </div>
+
+        <form id="signupForm">
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText">Something went wrong.</span>
+            </div>
+
+            <div class="form-group">
+                <label>Full Name <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="signupName" placeholder="e.g. Jessica Smith" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="signupEmail" placeholder="you@example.com" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Password <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="signupPassword" placeholder="Min. 8 characters" required minlength="8" />
+                    <button type="button" class="toggle-password" onclick="togglePassword()">
+                        <i class="fas fa-eye" id="toggleIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Gender <span class="required">*</span></label>
+                <div class="gender-group">
+                    <input type="radio" name="gender" id="genderMale" value="Male" />
+                    <label for="genderMale"><i class="fas fa-mars"></i> Male</label>
+                    <input type="radio" name="gender" id="genderFemale" value="Female" />
+                    <label for="genderFemale"><i class="fas fa-venus"></i> Female</label>
+                    <input type="radio" name="gender" id="genderOther" value="Other" />
+                    <label for="genderOther"><i class="fas fa-genderless"></i> Other</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Looking for <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-users"></i>
+                    <select id="lookingFor" required>
+                        <option value="" disabled selected>Select preference</option>
+                        <option value="Men">Men</option>
+                        <option value="Women">Women</option>
+                        <option value="Everyone">Everyone</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date of Birth <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-calendar"></i>
+                        <input type="date" id="signupDob" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" id="signupLocation" placeholder="e.g. Toronto, ON" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Bio / About</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-align-left" style="top:16px;transform:none;"></i>
+                    <textarea id="signupBio" placeholder="Tell us about yourself..." style="padding-left:44px;"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Interests (comma separated)</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-tags"></i>
+                    <input type="text" id="signupInterests" placeholder="e.g. Travel, Music, Hiking" />
+                </div>
+            </div>
+
+            <label class="terms-check">
+                <input type="checkbox" id="termsCheck" required />
+                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+            </label>
+
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-heart"></i> Create Account
+            </button>
+
+            <div class="security-badge">
+                <i class="fas fa-shield-halved"></i> Your data is safe &amp; encrypted
+            </div>
+
+            <div class="form-footer">
+                Already a member? <a href="loginpage.html">Log In</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ===== JAVASCRIPT ===== -->
+<!-- ============================================================ -->
+<script type="module">
+import { signUp, signIn, supabase } from './supabase.js';
+
+// Toggle password visibility
+window.togglePassword = function() {
+    const input = document.getElementById('signupPassword');
+    const icon = document.getElementById('toggleIcon');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+};
+
+// Handle signup
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const gender = document.querySelector('input[name="gender"]:checked');
+    const lookingFor = document.getElementById('lookingFor').value;
+    const dob = document.getElementById('signupDob').value;
+    const location = document.getElementById('signupLocation').value.trim();
+    const bio = document.getElementById('signupBio').value.trim();
+    const interests = document.getElementById('signupInterests').value.trim();
+    const terms = document.getElementById('termsCheck');
+
+    const errorDiv = document.getElementById('errorMessage');
+    const errorText = document.getElementById('errorText');
+
+    errorDiv.classList.remove('show');
+
+    // Validation
+    if (!name || !email || !password || !gender || !lookingFor || !dob) {
+        errorText.textContent = 'Please fill in all required fields.';
+        errorDiv.classList.add('show');
+        return;
+    }
+    if (!email.includes('@') || !email.includes('.')) {
+        errorText.textContent = 'Please enter a valid email address.';
+        errorDiv.classList.add('show');
+        return;
+    }
+    if (password.length < 8) {
+        errorText.textContent = 'Password must be at least 8 characters.';
+        errorDiv.classList.add('show');
+        return;
+    }
+    if (!terms.checked) {
+        errorText.textContent = 'You must agree to the Terms of Service.';
+        errorDiv.classList.add('show');
+        return;
+    }
+    if (new Date(dob) > new Date(new Date().setFullYear(new Date().getFullYear() - 18))) {
+        errorText.textContent = 'You must be at least 18 years old.';
+        errorDiv.classList.add('show');
+        return;
+    }
+
+    try {
+        // Build profile data
+        const profileData = {
+            name,
+            gender: gender.value,
+            lookingFor,
+            dob,
+            location,
+            bio,
+            interests
+        };
+
+        // 🔐 Sign up with Supabase
+        const { data, error } = await signUp(email, password, profileData);
+
+        if (error) {
+            if (error.message.includes('already registered')) {
+                errorText.textContent = 'This email is already registered. Please log in.';
+                errorDiv.classList.add('show');
+                return;
+            }
+            throw error;
+        }
+
+        // ✅ Auto-login after signup
+        const { data: loginData, error: loginError } = await signIn(email, password);
+        if (loginError) {
+            window.location.href = 'loginpage.html';
+            return;
+        }
+
+        // Check if user is admin
+        const { data: member } = await supabase
+            .from('members')
+            .select('source')
+            .eq('id', loginData.user.id)
+            .single();
+
+        if (member && member.source === 'admin') {
+            localStorage.setItem('isAdminLoggedIn', 'true');
+            window.location.href = 'admin-panel.html';
+        } else {
+            // 👤 Regular user → members.html
+            window.location.href = 'members.html';
+        }
+
+    } catch (err) {
+        errorText.textContent = err.message || 'Sign up failed. Please try again.';
+        errorDiv.classList.add('show');
+        console.error('Signup error:', err);
+    }
+});
+
+console.log('💜 ProLoveHub Signup loaded.');
+</script>
+
+</body>
+</html>
