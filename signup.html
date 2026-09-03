@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
     <style>
-        /* Same as before, keeping it clean */
+        /* same styles as before, kept concise */
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Inter',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#f5f0f2; padding:20px; }
         .signup-wrapper { display:flex; max-width:1000px; width:100%; background:#fff; border-radius:32px; box-shadow:0 40px 80px rgba(26,20,35,0.12); overflow:hidden; }
@@ -78,137 +78,268 @@
 </head>
 <body>
 
-    <!-- Load Supabase from CDN (this creates global 'supabase') -->
+    <!-- Load Supabase from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
-    <!-- Our script uses the global 'supabase' -->
+    <div class="signup-wrapper">
+        <!-- Left Panel -->
+        <div class="signup-brand">
+            <a href="index.html" class="logo">
+                <div class="icon"><i class="fas fa-heart"></i></div>
+                <div>
+                    <span class="brand"><span class="pro">Pro</span><span class="love">Love</span><span class="hub">Hub</span></span>
+                    <div class="tagline">Premium Matchmaking</div>
+                </div>
+            </a>
+            <div class="hero-text">
+                <h1>Create Your <span class="gold">Account</span></h1>
+                <p>Start your love story today with science-backed matching.</p>
+            </div>
+            <div class="features">
+                <div class="feature"><i class="fas fa-brain"></i> Science-backed matching</div>
+                <div class="feature"><i class="fas fa-shield-check"></i> Verified &amp; secure</div>
+                <div class="feature"><i class="fas fa-gem"></i> Curated daily matches</div>
+            </div>
+            <div class="trust-badges">
+                <span><i class="fas fa-star"></i> 4.9/5 Rating</span>
+                <span><i class="fas fa-heart"></i> 12K+ Couples</span>
+                <span><i class="fas fa-lock"></i> 100% Encrypted</span>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="signup-form-panel">
+            <div class="header">
+                <h2>Create <span class="highlight">Account</span></h2>
+                <p>Start your love story today.</p>
+            </div>
+            <form id="signupForm">
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorText">Something went wrong.</span>
+                </div>
+                <div class="form-group">
+                    <label>Full Name <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signupName" placeholder="e.g. Jessica Smith" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signupEmail" placeholder="you@example.com" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signupPassword" placeholder="Min. 8 characters" required minlength="8" />
+                        <button type="button" class="toggle-password" onclick="togglePassword()"><i class="fas fa-eye" id="toggleIcon"></i></button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Gender <span class="required">*</span></label>
+                    <div class="gender-group">
+                        <input type="radio" name="gender" id="genderMale" value="Male" />
+                        <label for="genderMale"><i class="fas fa-mars"></i> Male</label>
+                        <input type="radio" name="gender" id="genderFemale" value="Female" />
+                        <label for="genderFemale"><i class="fas fa-venus"></i> Female</label>
+                        <input type="radio" name="gender" id="genderOther" value="Other" />
+                        <label for="genderOther"><i class="fas fa-genderless"></i> Other</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Looking for <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-users"></i>
+                        <select id="lookingFor" required>
+                            <option value="" disabled selected>Select preference</option>
+                            <option value="Men">Men</option>
+                            <option value="Women">Women</option>
+                            <option value="Everyone">Everyone</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date of Birth <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-calendar"></i>
+                            <input type="date" id="signupDob" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="signupLocation" placeholder="e.g. Toronto, ON" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Bio / About</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-align-left" style="top:16px;transform:none;"></i>
+                        <textarea id="signupBio" placeholder="Tell us about yourself..." style="padding-left:44px;"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Interests (comma separated)</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-tags"></i>
+                        <input type="text" id="signupInterests" placeholder="e.g. Travel, Music, Hiking" />
+                    </div>
+                </div>
+                <label class="terms-check">
+                    <input type="checkbox" id="termsCheck" required />
+                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+                </label>
+                <button type="submit" class="btn-primary"><i class="fas fa-heart"></i> Create Account</button>
+                <div class="security-badge"><i class="fas fa-shield-halved"></i> Your data is safe &amp; encrypted</div>
+                <div class="form-footer">Already a member? <a href="loginpage.html">Log In</a></div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Initialize Supabase client using the global variable 'supabase'
-        const SUPABASE_URL = 'https://precvldulohwudpfmzsn.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZWN2bGR1bG9od3VkcGZtenNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwMDMwNzUsImV4cCI6MjEwMjU3OTA3NX0.BYpgOVlLG1cw5pdYfjrhI_bP615ALKCr1tb9U5Ooc0c';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
 
-        // ---------- Toggle password visibility ----------
-        function togglePassword() {
-            const input = document.getElementById('signupPassword');
-            const icon = document.getElementById('toggleIcon');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        }
+            // Initialize Supabase client
+            const SUPABASE_URL = 'https://precvldulohwudpfmzsn.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZWN2bGR1bG9od3VkcGZtenNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwMDMwNzUsImV4cCI6MjEwMjU3OTA3NX0.BYpgOVlLG1cw5pdYfjrhI_bP615ALKCr1tb9U5Ooc0c';
+            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ---------- Handle signup ----------
-        document.getElementById('signupForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+            // Toggle password visibility
+            window.togglePassword = function() {
+                const input = document.getElementById('signupPassword');
+                const icon = document.getElementById('toggleIcon');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            };
 
-            const name = document.getElementById('signupName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            const gender = document.querySelector('input[name="gender"]:checked');
-            const lookingFor = document.getElementById('lookingFor').value;
-            const dob = document.getElementById('signupDob').value;
-            const location = document.getElementById('signupLocation').value.trim();
-            const bio = document.getElementById('signupBio').value.trim();
-            const interests = document.getElementById('signupInterests').value.trim();
-            const terms = document.getElementById('termsCheck');
+            // Handle form submission
+            const form = document.getElementById('signupForm');
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
 
-            const errorDiv = document.getElementById('errorMessage');
-            const errorText = document.getElementById('errorText');
-            errorDiv.classList.remove('show');
+                    const name = document.getElementById('signupName').value.trim();
+                    const email = document.getElementById('signupEmail').value.trim();
+                    const password = document.getElementById('signupPassword').value;
+                    const gender = document.querySelector('input[name="gender"]:checked');
+                    const lookingFor = document.getElementById('lookingFor').value;
+                    const dob = document.getElementById('signupDob').value;
+                    const location = document.getElementById('signupLocation').value.trim();
+                    const bio = document.getElementById('signupBio').value.trim();
+                    const interests = document.getElementById('signupInterests').value.trim();
+                    const terms = document.getElementById('termsCheck');
 
-            // Validation
-            if (!name || !email || !password || !gender || !lookingFor || !dob) {
-                errorText.textContent = 'Please fill in all required fields.';
-                errorDiv.classList.add('show');
-                return;
-            }
-            if (!email.includes('@') || !email.includes('.')) {
-                errorText.textContent = 'Please enter a valid email address.';
-                errorDiv.classList.add('show');
-                return;
-            }
-            if (password.length < 8) {
-                errorText.textContent = 'Password must be at least 8 characters.';
-                errorDiv.classList.add('show');
-                return;
-            }
-            if (!terms.checked) {
-                errorText.textContent = 'You must agree to the Terms of Service.';
-                errorDiv.classList.add('show');
-                return;
-            }
-            if (new Date(dob) > new Date(new Date().setFullYear(new Date().getFullYear() - 18))) {
-                errorText.textContent = 'You must be at least 18 years old.';
-                errorDiv.classList.add('show');
-                return;
-            }
+                    const errorDiv = document.getElementById('errorMessage');
+                    const errorText = document.getElementById('errorText');
+                    errorDiv.classList.remove('show');
 
-            try {
-                // Sign up
-                const { data, error } = await supabaseClient.auth.signUp({
-                    email,
-                    password,
-                    options: { data: { name } }
-                });
-
-                if (error) {
-                    if (error.message.includes('already registered')) {
-                        errorText.textContent = 'This email is already registered. Please log in.';
+                    // Validation
+                    if (!name || !email || !password || !gender || !lookingFor || !dob) {
+                        errorText.textContent = 'Please fill in all required fields.';
                         errorDiv.classList.add('show');
                         return;
                     }
-                    throw error;
-                }
+                    if (!email.includes('@') || !email.includes('.')) {
+                        errorText.textContent = 'Please enter a valid email address.';
+                        errorDiv.classList.add('show');
+                        return;
+                    }
+                    if (password.length < 8) {
+                        errorText.textContent = 'Password must be at least 8 characters.';
+                        errorDiv.classList.add('show');
+                        return;
+                    }
+                    if (!terms.checked) {
+                        errorText.textContent = 'You must agree to the Terms of Service.';
+                        errorDiv.classList.add('show');
+                        return;
+                    }
+                    if (new Date(dob) > new Date(new Date().setFullYear(new Date().getFullYear() - 18))) {
+                        errorText.textContent = 'You must be at least 18 years old.';
+                        errorDiv.classList.add('show');
+                        return;
+                    }
 
-                // Update profile with extra fields
-                if (data.user) {
-                    await supabaseClient
-                        .from('members')
-                        .update({
-                            name,
-                            gender: gender.value,
-                            looking_for: lookingFor,
-                            dob,
-                            location,
-                            bio,
-                            interests: interests ? interests.split(',').map(s => s.trim()).filter(Boolean) : []
-                        })
-                        .eq('id', data.user.id);
-                }
+                    try {
+                        // Sign up
+                        const { data, error } = await supabaseClient.auth.signUp({
+                            email,
+                            password,
+                            options: { data: { name } }
+                        });
 
-                // Auto-login
-                const { data: loginData, error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (loginError) {
-                    window.location.href = 'loginpage.html';
-                    return;
-                }
+                        if (error) {
+                            if (error.message.includes('already registered')) {
+                                errorText.textContent = 'This email is already registered. Please log in.';
+                                errorDiv.classList.add('show');
+                                return;
+                            }
+                            throw error;
+                        }
 
-                // Check admin
-                const { data: member } = await supabaseClient
-                    .from('members')
-                    .select('source')
-                    .eq('id', loginData.user.id)
-                    .single();
+                        // Update profile with extra fields
+                        if (data.user) {
+                            await supabaseClient
+                                .from('members')
+                                .update({
+                                    name,
+                                    gender: gender.value,
+                                    looking_for: lookingFor,
+                                    dob,
+                                    location,
+                                    bio,
+                                    interests: interests ? interests.split(',').map(s => s.trim()).filter(Boolean) : []
+                                })
+                                .eq('id', data.user.id);
+                        }
 
-                if (member && member.source === 'admin') {
-                    localStorage.setItem('isAdminLoggedIn', 'true');
-                    window.location.href = 'admin-panel.html';
-                } else {
-                    // ✅ Redirect to members.html
-                    window.location.href = 'members.html';
-                }
-            } catch (err) {
-                errorText.textContent = err.message || 'Sign up failed. Please try again.';
-                errorDiv.classList.add('show');
-                console.error('Signup error:', err);
+                        // Auto-login
+                        const { data: loginData, error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
+                        if (loginError) {
+                            window.location.href = 'loginpage.html';
+                            return;
+                        }
+
+                        // Check admin
+                        const { data: member } = await supabaseClient
+                            .from('members')
+                            .select('source')
+                            .eq('id', loginData.user.id)
+                            .single();
+
+                        if (member && member.source === 'admin') {
+                            localStorage.setItem('isAdminLoggedIn', 'true');
+                            window.location.href = 'admin-panel.html';
+                        } else {
+                            window.location.href = 'members.html';
+                        }
+                    } catch (err) {
+                        errorText.textContent = err.message || 'Sign up failed. Please try again.';
+                        errorDiv.classList.add('show');
+                        console.error('Signup error:', err);
+                    }
+                });
+            } else {
+                console.error('Form with id "signupForm" not found.');
             }
         });
     </script>
+
 </body>
-</html>
+</html>s
