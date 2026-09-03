@@ -37,7 +37,7 @@
             transition: all 0.3s ease;
         }
 
-        /* ===== LEFT PANEL — BRANDING ===== */
+        /* ===== LEFT PANEL ===== */
         .login-brand {
             flex: 1;
             padding: 48px 40px;
@@ -172,7 +172,7 @@
 
         .login-brand .trust-badges span i { color: #D4A54A; }
 
-        /* ===== RIGHT PANEL — LOGIN FORM ===== */
+        /* ===== RIGHT PANEL ===== */
         .login-form-panel {
             flex: 1;
             padding: 48px 44px;
@@ -465,13 +465,9 @@
     </div>
 </div>
 
-<!-- ============================================================ -->
-<!-- ===== JAVASCRIPT ===== -->
-<!-- ============================================================ -->
 <script type="module">
 import { signIn, supabase } from './supabase.js';
 
-// Toggle password visibility
 window.togglePassword = function() {
     const input = document.getElementById('loginPassword');
     const icon = document.getElementById('toggleIcon');
@@ -486,7 +482,6 @@ window.togglePassword = function() {
     }
 };
 
-// Handle login
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -495,10 +490,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const errorDiv = document.getElementById('errorMessage');
     const errorText = document.getElementById('errorText');
 
-    // Reset error
     errorDiv.classList.remove('show');
 
-    // Validate
     if (!email || !password) {
         errorText.textContent = 'Please fill in all fields.';
         errorDiv.classList.add('show');
@@ -506,43 +499,34 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     }
 
     try {
-        // 🔐 Sign in with Supabase
         const { data, error } = await signIn(email, password);
-
         if (error) {
-            if (error.message.includes('Invalid login credentials')) {
-                errorText.textContent = 'Invalid email or password. Please try again.';
-            } else {
-                errorText.textContent = error.message;
-            }
+            errorText.textContent = error.message.includes('Invalid login credentials') 
+                ? 'Invalid email or password.' 
+                : error.message;
             errorDiv.classList.add('show');
             return;
         }
 
-        // ✅ Check if user is admin
         const { data: member } = await supabase
             .from('members')
             .select('source')
             .eq('id', data.user.id)
             .single();
 
-        // 👨‍💼 Admin → admin-panel.html
         if (member && member.source === 'admin') {
             localStorage.setItem('isAdminLoggedIn', 'true');
             window.location.href = 'admin-panel.html';
         } else {
-            // 👤 Regular user → members.html
             window.location.href = 'members.html';
         }
 
     } catch (err) {
         errorText.textContent = 'Something went wrong. Please try again.';
         errorDiv.classList.add('show');
-        console.error('Login error:', err);
+        console.error(err);
     }
 });
-
-console.log('🔐 ProLoveHub Login loaded.');
 </script>
 
 </body>
