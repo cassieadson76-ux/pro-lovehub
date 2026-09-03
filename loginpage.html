@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
     <style>
-        /* ... same as previous ... */
+        /* ... same as before ... (keep the styles) */
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Inter',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#f5f0f2; padding:20px; }
         .login-wrapper { display:flex; max-width:1000px; width:100%; min-height:600px; background:#fff; border-radius:32px; box-shadow:0 40px 80px rgba(26,20,35,0.12); overflow:hidden; }
@@ -62,7 +62,18 @@
     </style>
 </head>
 <body>
+
+<!-- ===== Load Supabase JS ===== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  // Initialize Supabase client
+  const SUPABASE_URL = 'https://precvldulohwudpfmzsn.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZWN2bGR1bG9od3VkcGZtenNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwMDMwNzUsImV4cCI6MjEwMjU3OTA3NX0.BYpgOVlLG1cw5pdYfjrhI_bP615ALKCr1tb9U5Ooc0c';
+  const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
+
 <div class="login-wrapper">
+    <!-- Left Panel -->
     <div class="login-brand">
         <a href="index.html" class="logo">
             <div class="icon"><i class="fas fa-heart"></i></div>
@@ -86,13 +97,18 @@
             <span><i class="fas fa-lock"></i> 100% Encrypted</span>
         </div>
     </div>
+
+    <!-- Right Panel -->
     <div class="login-form-panel">
         <div class="header">
             <h2>Welcome <span class="highlight">Back</span></h2>
             <p>Sign in to continue your journey.</p>
         </div>
         <form id="loginForm">
-            <div class="error-message" id="errorMessage"><i class="fas fa-exclamation-circle"></i><span id="errorText">Invalid email or password.</span></div>
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText">Invalid email or password.</span>
+            </div>
             <div class="form-group">
                 <label for="loginEmail">Email Address</label>
                 <div class="input-wrapper">
@@ -118,53 +134,67 @@
         </form>
     </div>
 </div>
-<script type="module">
-    import { signIn, supabase } from './supabase.js';
-    window.togglePassword = function() {
-        const input = document.getElementById('loginPassword');
-        const icon = document.getElementById('toggleIcon');
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            input.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
-    };
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value.trim();
-        const errorDiv = document.getElementById('errorMessage');
-        const errorText = document.getElementById('errorText');
-        errorDiv.classList.remove('show');
-        if (!email || !password) {
-            errorText.textContent = 'Please fill in all fields.';
-            errorDiv.classList.add('show');
-            return;
-        }
-        try {
-            const { data, error } = await signIn(email, password);
-            if (error) {
-                errorText.textContent = error.message.includes('Invalid login credentials') ? 'Invalid email or password.' : error.message;
-                errorDiv.classList.add('show');
-                return;
-            }
-            const { data: member } = await supabase.from('members').select('source').eq('id', data.user.id).single();
-            if (member && member.source === 'admin') {
-                localStorage.setItem('isAdminLoggedIn', 'true');
-                window.location.href = 'admin-panel.html';
-            } else {
-                window.location.href = 'members.html';
-            }
-        } catch (err) {
-            errorText.textContent = 'Something went wrong. Please try again.';
-            errorDiv.classList.add('show');
-            console.error(err);
-        }
-    });
+
+<script>
+// Toggle password visibility
+function togglePassword() {
+  const input = document.getElementById('loginPassword');
+  const icon = document.getElementById('toggleIcon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.remove('fa-eye');
+    icon.classList.add('fa-eye-slash');
+  } else {
+    input.type = 'password';
+    icon.classList.remove('fa-eye-slash');
+    icon.classList.add('fa-eye');
+  }
+}
+
+// Handle login
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const errorDiv = document.getElementById('errorMessage');
+  const errorText = document.getElementById('errorText');
+  errorDiv.classList.remove('show');
+
+  if (!email || !password) {
+    errorText.textContent = 'Please fill in all fields.';
+    errorDiv.classList.add('show');
+    return;
+  }
+
+  try {
+    // Sign in with Supabase
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      errorText.textContent = error.message.includes('Invalid login credentials') ? 'Invalid email or password.' : error.message;
+      errorDiv.classList.add('show');
+      return;
+    }
+
+    // Check if user is admin
+    const { data: member } = await supabase
+      .from('members')
+      .select('source')
+      .eq('id', data.user.id)
+      .single();
+
+    if (member && member.source === 'admin') {
+      localStorage.setItem('isAdminLoggedIn', 'true');
+      window.location.href = 'admin-panel.html';
+    } else {
+      window.location.href = 'members.html'; // ✅ Redirect to members page
+    }
+  } catch (err) {
+    errorText.textContent = 'Something went wrong. Please try again.';
+    errorDiv.classList.add('show');
+    console.error(err);
+  }
+});
 </script>
+
 </body>
 </html>
