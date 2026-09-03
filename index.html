@@ -474,6 +474,54 @@
             font-weight: 600;
         }
 
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 40px 0 24px;
+        }
+
+        .footer .container {
+            text-align: center;
+        }
+
+        .footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin: 16px 0;
+        }
+
+        .footer .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        .footer .admin-link {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .footer .admin-link:hover {
+            color: var(--secondary);
+        }
+
+        .footer p {
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .hero .container {
@@ -664,6 +712,22 @@
         </div>
     </section>
 
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="members.html">Find Members</a>
+                <a href="signup.html">Sign Up</a>
+                <a href="loginpage.html">Log In</a>
+            </div>
+            <a href="admin-login.html" class="admin-link">
+                <i class="fas fa-shield-alt"></i> Admin Access
+            </a>
+            <p style="margin-top:16px;">&copy; 2026 ProLoveHub. All rights reserved.</p>
+        </div>
+    </footer>
+
     <!-- ===== JAVASCRIPT ===== -->
     <script>
         // Hamburger menu toggle
@@ -682,7 +746,7 @@
         });
 
         console.log('❤️ ProLoveHub — Where Compatibility Meets Chemistry');
-        console.log('🔗 Join Free → signup.html | Log In → loginpage.html | Find Members → members.html');
+        console.log('🔗 Admin Login: admin-login.html');
     </script>
 
 </body>
