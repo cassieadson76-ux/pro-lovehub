@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
   <style>
+    /* (same as before, keep styles) */
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family:'Inter',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#f5f0f2; padding:20px; }
     .signup-wrapper { display:flex; max-width:1000px; width:100%; background:#fff; border-radius:32px; box-shadow:0 40px 80px rgba(26,20,35,0.12); overflow:hidden; }
@@ -77,16 +78,17 @@
 </head>
 <body>
 
-<!-- ===== LOAD SUPABASE FROM CDN ===== -->
+<!-- Load Supabase UMD -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
 <script>
-  // ----- GLOBAL CLIENT SETUP (No redeclaration) -----
-  // Using a unique variable name to avoid conflicts
-  const PLH_SUPABASE_URL = 'https://precvldulohwudpfmzsn.supabase.co';
-  const PLH_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZWN2bGR1bG9od3VkcGZtenNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwMDMwNzUsImV4cCI6MjEwMjU3OTA3NX0.BYpgOVlLG1cw5pdYfjrhI_bP615ALKCr1tb9U5Ooc0c';
-  // Create client and store in a global variable
-  window.plhSupabase = supabaseJs.createClient(PLH_SUPABASE_URL, PLH_SUPABASE_ANON_KEY);
+  // Create a global client instance using window.supabase (the UMD global)
+  const supabaseUrl = 'https://precvldulohwudpfmzsn.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZWN2bGR1bG9od3VkcGZtenNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwMDMwNzUsImV4cCI6MjEwMjU3OTA3NX0.BYpgOVlLG1cw5pdYfjrhI_bP615ALKCr1tb9U5Ooc0c';
+  // The global from UMD is window.supabase
+  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  // Store in window for easy access
+  window.plhSupabase = supabase;
 </script>
 
 <div class="signup-wrapper">
@@ -213,7 +215,7 @@
 </div>
 
 <script>
-  // ----- Toggle password visibility -----
+  // Toggle password visibility
   function togglePassword() {
     const input = document.getElementById('signupPassword');
     const icon = document.getElementById('toggleIcon');
@@ -228,11 +230,10 @@
     }
   }
 
-  // ----- Handle signup form submission -----
+  // Handle signup
   document.getElementById('signupForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    // Get form values
     const name = document.getElementById('signupName').value.trim();
     const email = document.getElementById('signupEmail').value.trim();
     const password = document.getElementById('signupPassword').value;
@@ -276,7 +277,7 @@
     }
 
     try {
-      // ----- Sign up using the global Supabase client -----
+      // Use window.plhSupabase
       const { data, error } = await window.plhSupabase.auth.signUp({
         email,
         password,
@@ -292,7 +293,7 @@
         throw error;
       }
 
-      // ----- Update profile with additional fields -----
+      // Update profile
       if (data.user) {
         await window.plhSupabase
           .from('members')
@@ -308,14 +309,14 @@
           .eq('id', data.user.id);
       }
 
-      // ----- Auto-login after signup -----
+      // Auto-login
       const { data: loginData, error: loginError } = await window.plhSupabase.auth.signInWithPassword({ email, password });
       if (loginError) {
         window.location.href = 'loginpage.html';
         return;
       }
 
-      // ----- Check if user is admin -----
+      // Check admin
       const { data: member } = await window.plhSupabase
         .from('members')
         .select('source')
@@ -326,7 +327,6 @@
         localStorage.setItem('isAdminLoggedIn', 'true');
         window.location.href = 'admin-panel.html';
       } else {
-        // ✅ Redirect to members.html
         window.location.href = 'members.html';
       }
     } catch (err) {
