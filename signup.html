@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
     <style>
-        /* same styles, with added cooldown message */
+        /* same as before, with cooldown */
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Inter',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#f5f0f2; padding:20px; }
         .signup-wrapper { display:flex; max-width:1000px; width:100%; background:#fff; border-radius:32px; box-shadow:0 40px 80px rgba(26,20,35,0.12); overflow:hidden; }
@@ -210,12 +210,12 @@
             const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZWN2bGR1bG9od3VkcGZtenNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwMDMwNzUsImV4cCI6MjEwMjU3OTA3NX0.BYpgOVlLG1cw5pdYfjrhI_bP615ALKCr1tb9U5Ooc0c';
             const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            // Elements
             const form = document.getElementById('signupForm');
             const submitBtn = document.getElementById('submitBtn');
             const cooldownText = document.getElementById('cooldownText');
+            const errorDiv = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
 
-            // Toggle password
             window.togglePassword = function() {
                 const input = document.getElementById('signupPassword');
                 const icon = document.getElementById('toggleIcon');
@@ -230,13 +230,11 @@
                 }
             };
 
-            // Cooldown function
             function startCooldown(seconds) {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${seconds}s`;
                 cooldownText.style.display = 'block';
                 cooldownText.textContent = `⏳ Please wait ${seconds} seconds before trying again.`;
-
                 const interval = setInterval(() => {
                     seconds--;
                     if (seconds <= 0) {
@@ -251,14 +249,12 @@
                 }, 1000);
             }
 
-            // Form submit
             if (form) {
                 form.addEventListener('submit', async function(e) {
                     e.preventDefault();
-
-                    // Disable button immediately to prevent double-click
                     submitBtn.disabled = true;
                     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                    errorDiv.classList.remove('show');
 
                     const name = document.getElementById('signupName').value.trim();
                     const email = document.getElementById('signupEmail').value.trim();
@@ -270,10 +266,6 @@
                     const bio = document.getElementById('signupBio').value.trim();
                     const interests = document.getElementById('signupInterests').value.trim();
                     const terms = document.getElementById('termsCheck');
-
-                    const errorDiv = document.getElementById('errorMessage');
-                    const errorText = document.getElementById('errorText');
-                    errorDiv.classList.remove('show');
 
                     // Validation
                     if (!name || !email || !password || !gender || !lookingFor || !dob) {
@@ -321,11 +313,10 @@
                         });
 
                         if (error) {
-                            // Handle rate limiting (429)
+                            console.error('Signup error:', error);
                             if (error.status === 429 || error.message.includes('only request this after')) {
                                 errorText.textContent = 'Too many attempts. Please wait before trying again.';
                                 errorDiv.classList.add('show');
-                                // Start cooldown for 15 seconds
                                 startCooldown(15);
                                 return;
                             }
@@ -336,7 +327,11 @@
                                 submitBtn.innerHTML = '<i class="fas fa-heart"></i> Create Account';
                                 return;
                             }
-                            throw error;
+                            errorText.textContent = error.message || 'Sign up failed. Please try again.';
+                            errorDiv.classList.add('show');
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = '<i class="fas fa-heart"></i> Create Account';
+                            return;
                         }
 
                         // Update profile
@@ -376,11 +371,11 @@
                             window.location.href = 'members.html';
                         }
                     } catch (err) {
+                        console.error('Unexpected error:', err);
                         errorText.textContent = err.message || 'Sign up failed. Please try again.';
                         errorDiv.classList.add('show');
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = '<i class="fas fa-heart"></i> Create Account';
-                        console.error('Signup error:', err);
                     }
                 });
             }
@@ -388,4 +383,4 @@
     </script>
 
 </body>
-</html>s
+</html>
