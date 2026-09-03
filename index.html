@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ProLoveHub — Premium Matchmaking</title>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
     <style>
         /* ===================== CSS VARIABLES ===================== */
@@ -628,7 +630,7 @@
                         <i class="fas fa-heart"></i>
                         Find Your Match
                     </a>
-                    <a href="signup.html" class="btn-secondary">
+                    <a href="loginpage.html" class="btn-secondary">
                         <i class="fas fa-user-plus"></i>
                         Join Free
                     </a>
@@ -687,6 +689,7 @@
 
     <!-- ===== JAVASCRIPT ===== -->
     <script>
+        // Hamburger menu toggle
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('navLinks');
 
@@ -694,6 +697,7 @@
             navLinks.classList.toggle('open');
         });
 
+        // Close menu when a link is clicked
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('open');
@@ -701,6 +705,7 @@
         });
 
         console.log('❤️ ProLoveHub — Where Compatibility Meets Chemistry');
+        console.log('🔗 Find Members: members.html | Join Free: loginpage.html');
     </script>
 
 </body>
