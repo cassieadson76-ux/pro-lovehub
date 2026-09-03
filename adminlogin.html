@@ -51,9 +51,6 @@
         .error-message.show { display:flex; }
         .security-badge { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:18px; font-size:12px; color:#9A94A3; }
         .security-badge i { color:#4CAF50; font-size:14px; }
-        .form-footer { text-align:center; margin-top:18px; font-size:14px; color:#6B6570; }
-        .form-footer a { color:#C2185B; font-weight:600; text-decoration:none; }
-        .form-footer a:hover { text-decoration:underline; }
         .demo-text { text-align:center; margin-top:12px; font-size:13px; color:#9A94A3; }
         @media (max-width:820px) { .login-wrapper { flex-direction:column; max-width:480px; border-radius:24px; } .login-brand { padding:32px 28px; min-height:240px; } .login-brand .hero-text h1 { font-size:28px; } .login-form-panel { padding:32px 28px; } .login-brand .hero-text { max-width:100%; } }
         @media (max-width:480px) { .login-brand { padding:24px 20px; } .login-form-panel { padding:24px 20px; } .login-brand .logo .brand { font-size:22px; } .login-form-panel .header h2 { font-size:26px; } }
@@ -162,7 +159,6 @@
                     }
 
                     try {
-                        // Sign in with Supabase
                         const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
                         if (error) {
                             errorText.textContent = error.message.includes('Invalid login credentials') ? 'Invalid email or password.' : error.message;
@@ -170,7 +166,6 @@
                             return;
                         }
 
-                        // Check if user is admin
                         const { data: member, error: memberError } = await supabaseClient
                             .from('members')
                             .select('source')
