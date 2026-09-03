@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
     <style>
+        /* Same styling as login page, but with slightly adjusted padding for the form */
         * {
             margin: 0;
             padding: 0;
@@ -578,13 +579,9 @@
     </div>
 </div>
 
-<!-- ============================================================ -->
-<!-- ===== JAVASCRIPT ===== -->
-<!-- ============================================================ -->
 <script type="module">
 import { signUp, signIn, supabase } from './supabase.js';
 
-// Toggle password visibility
 window.togglePassword = function() {
     const input = document.getElementById('signupPassword');
     const icon = document.getElementById('toggleIcon');
@@ -599,7 +596,6 @@ window.togglePassword = function() {
     }
 };
 
-// Handle signup
 document.getElementById('signupForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -619,7 +615,6 @@ document.getElementById('signupForm').addEventListener('submit', async function(
 
     errorDiv.classList.remove('show');
 
-    // Validation
     if (!name || !email || !password || !gender || !lookingFor || !dob) {
         errorText.textContent = 'Please fill in all required fields.';
         errorDiv.classList.add('show');
@@ -647,7 +642,6 @@ document.getElementById('signupForm').addEventListener('submit', async function(
     }
 
     try {
-        // Build profile data
         const profileData = {
             name,
             gender: gender.value,
@@ -658,9 +652,7 @@ document.getElementById('signupForm').addEventListener('submit', async function(
             interests
         };
 
-        // 🔐 Sign up with Supabase
         const { data, error } = await signUp(email, password, profileData);
-
         if (error) {
             if (error.message.includes('already registered')) {
                 errorText.textContent = 'This email is already registered. Please log in.';
@@ -670,14 +662,13 @@ document.getElementById('signupForm').addEventListener('submit', async function(
             throw error;
         }
 
-        // ✅ Auto-login after signup
+        // Auto-login
         const { data: loginData, error: loginError } = await signIn(email, password);
         if (loginError) {
             window.location.href = 'loginpage.html';
             return;
         }
 
-        // Check if user is admin
         const { data: member } = await supabase
             .from('members')
             .select('source')
@@ -688,7 +679,6 @@ document.getElementById('signupForm').addEventListener('submit', async function(
             localStorage.setItem('isAdminLoggedIn', 'true');
             window.location.href = 'admin-panel.html';
         } else {
-            // 👤 Regular user → members.html
             window.location.href = 'members.html';
         }
 
@@ -698,8 +688,6 @@ document.getElementById('signupForm').addEventListener('submit', async function(
         console.error('Signup error:', err);
     }
 });
-
-console.log('💜 ProLoveHub Signup loaded.');
 </script>
 
 </body>
