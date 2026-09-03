@@ -4,9 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ProLoveHub — Premium Matchmaking</title>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
     <style>
         /* ===================== CSS VARIABLES ===================== */
@@ -598,7 +596,6 @@
                 <li><a href="members.html">Find Members</a></li>
                 <li><a href="signup.html" class="btn-nav btn-nav-outline"><i class="fas fa-user-plus"></i> Sign Up</a></li>
                 <li><a href="login.html" class="btn-nav"><i class="fas fa-arrow-right-to-bracket"></i> Log In</a></li>
-                <li><a href="admin-login.html" style="font-size:13px;color:var(--text-lighter);"><i class="fas fa-shield-alt"></i> Admin</a></li>
             </ul>
 
             <button class="hamburger" id="hamburger" aria-label="Toggle menu">
@@ -690,7 +687,6 @@
 
     <!-- ===== JAVASCRIPT ===== -->
     <script>
-        // Hamburger menu toggle
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('navLinks');
 
@@ -698,7 +694,6 @@
             navLinks.classList.toggle('open');
         });
 
-        // Close menu when a link is clicked
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('open');
@@ -706,8 +701,7 @@
         });
 
         console.log('❤️ ProLoveHub — Where Compatibility Meets Chemistry');
-        console.log('🔗 Find Members: members.html | Sign Up: signup.html | Log In: login.html | Admin: admin-login.html');
     </script>
 
 </body>
-</html>s
+</html>
