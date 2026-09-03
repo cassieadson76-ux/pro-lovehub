@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet" />
     <style>
-        /* Same styles as login (with signup-specific adjustments) */
+        /* Same styles as login, with signup-specific adjustments */
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Inter',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#f5f0f2; padding:20px; }
         .signup-wrapper { display:flex; max-width:1000px; width:100%; background:#fff; border-radius:32px; box-shadow:0 40px 80px rgba(26,20,35,0.12); overflow:hidden; }
@@ -77,7 +77,17 @@
     </style>
 </head>
 <body>
+
+<!-- Load Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  const SUPABASE_URL = 'https://precvldulohwudpfmzsn.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZWN2bGR1bG9od3VkcGZtenNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwMDMwNzUsImV4cCI6MjEwMjU3OTA3NX0.BYpgOVlLG1cw5pdYfjrhI_bP615ALKCr1tb9U5Ooc0c';
+  const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
+
 <div class="signup-wrapper">
+    <!-- Left Panel -->
     <div class="signup-brand">
         <a href="index.html" class="logo">
             <div class="icon"><i class="fas fa-heart"></i></div>
@@ -101,13 +111,18 @@
             <span><i class="fas fa-lock"></i> 100% Encrypted</span>
         </div>
     </div>
+
+    <!-- Right Panel -->
     <div class="signup-form-panel">
         <div class="header">
             <h2>Create <span class="highlight">Account</span></h2>
             <p>Start your love story today.</p>
         </div>
         <form id="signupForm">
-            <div class="error-message" id="errorMessage"><i class="fas fa-exclamation-circle"></i><span id="errorText">Something went wrong.</span></div>
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText">Something went wrong.</span>
+            </div>
             <div class="form-group">
                 <label>Full Name <span class="required">*</span></label>
                 <div class="input-wrapper">
@@ -193,91 +208,125 @@
         </form>
     </div>
 </div>
-<script type="module">
-    import { signUp, signIn, supabase } from './supabase.js';
-    window.togglePassword = function() {
-        const input = document.getElementById('signupPassword');
-        const icon = document.getElementById('toggleIcon');
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            input.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
-    };
-    document.getElementById('signupForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const name = document.getElementById('signupName').value.trim();
-        const email = document.getElementById('signupEmail').value.trim();
-        const password = document.getElementById('signupPassword').value;
-        const gender = document.querySelector('input[name="gender"]:checked');
-        const lookingFor = document.getElementById('lookingFor').value;
-        const dob = document.getElementById('signupDob').value;
-        const location = document.getElementById('signupLocation').value.trim();
-        const bio = document.getElementById('signupBio').value.trim();
-        const interests = document.getElementById('signupInterests').value.trim();
-        const terms = document.getElementById('termsCheck');
-        const errorDiv = document.getElementById('errorMessage');
-        const errorText = document.getElementById('errorText');
-        errorDiv.classList.remove('show');
-        if (!name || !email || !password || !gender || !lookingFor || !dob) {
-            errorText.textContent = 'Please fill in all required fields.';
-            errorDiv.classList.add('show');
-            return;
-        }
-        if (!email.includes('@') || !email.includes('.')) {
-            errorText.textContent = 'Please enter a valid email address.';
-            errorDiv.classList.add('show');
-            return;
-        }
-        if (password.length < 8) {
-            errorText.textContent = 'Password must be at least 8 characters.';
-            errorDiv.classList.add('show');
-            return;
-        }
-        if (!terms.checked) {
-            errorText.textContent = 'You must agree to the Terms of Service.';
-            errorDiv.classList.add('show');
-            return;
-        }
-        if (new Date(dob) > new Date(new Date().setFullYear(new Date().getFullYear() - 18))) {
-            errorText.textContent = 'You must be at least 18 years old.';
-            errorDiv.classList.add('show');
-            return;
-        }
-        try {
-            const profileData = { name, gender: gender.value, lookingFor, dob, location, bio, interests };
-            const { data, error } = await signUp(email, password, profileData);
-            if (error) {
-                if (error.message.includes('already registered')) {
-                    errorText.textContent = 'This email is already registered. Please log in.';
-                    errorDiv.classList.add('show');
-                    return;
-                }
-                throw error;
-            }
-            // Auto-login
-            const { data: loginData, error: loginError } = await signIn(email, password);
-            if (loginError) {
-                window.location.href = 'loginpage.html';
-                return;
-            }
-            const { data: member } = await supabase.from('members').select('source').eq('id', loginData.user.id).single();
-            if (member && member.source === 'admin') {
-                localStorage.setItem('isAdminLoggedIn', 'true');
-                window.location.href = 'admin-panel.html';
-            } else {
-                window.location.href = 'members.html';
-            }
-        } catch (err) {
-            errorText.textContent = err.message || 'Sign up failed. Please try again.';
-            errorDiv.classList.add('show');
-            console.error('Signup error:', err);
-        }
+
+<script>
+function togglePassword() {
+  const input = document.getElementById('signupPassword');
+  const icon = document.getElementById('toggleIcon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.remove('fa-eye');
+    icon.classList.add('fa-eye-slash');
+  } else {
+    input.type = 'password';
+    icon.classList.remove('fa-eye-slash');
+    icon.classList.add('fa-eye');
+  }
+}
+
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const gender = document.querySelector('input[name="gender"]:checked');
+  const lookingFor = document.getElementById('lookingFor').value;
+  const dob = document.getElementById('signupDob').value;
+  const location = document.getElementById('signupLocation').value.trim();
+  const bio = document.getElementById('signupBio').value.trim();
+  const interests = document.getElementById('signupInterests').value.trim();
+  const terms = document.getElementById('termsCheck');
+
+  const errorDiv = document.getElementById('errorMessage');
+  const errorText = document.getElementById('errorText');
+  errorDiv.classList.remove('show');
+
+  // Validation
+  if (!name || !email || !password || !gender || !lookingFor || !dob) {
+    errorText.textContent = 'Please fill in all required fields.';
+    errorDiv.classList.add('show');
+    return;
+  }
+  if (!email.includes('@') || !email.includes('.')) {
+    errorText.textContent = 'Please enter a valid email address.';
+    errorDiv.classList.add('show');
+    return;
+  }
+  if (password.length < 8) {
+    errorText.textContent = 'Password must be at least 8 characters.';
+    errorDiv.classList.add('show');
+    return;
+  }
+  if (!terms.checked) {
+    errorText.textContent = 'You must agree to the Terms of Service.';
+    errorDiv.classList.add('show');
+    return;
+  }
+  if (new Date(dob) > new Date(new Date().setFullYear(new Date().getFullYear() - 18))) {
+    errorText.textContent = 'You must be at least 18 years old.';
+    errorDiv.classList.add('show');
+    return;
+  }
+
+  try {
+    // Sign up
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { name } }
     });
+    if (error) {
+      if (error.message.includes('already registered')) {
+        errorText.textContent = 'This email is already registered. Please log in.';
+        errorDiv.classList.add('show');
+        return;
+      }
+      throw error;
+    }
+
+    // Update profile with additional fields
+    if (data.user) {
+      await supabase
+        .from('members')
+        .update({
+          name,
+          gender: gender.value,
+          looking_for: lookingFor,
+          dob,
+          location,
+          bio,
+          interests: interests ? interests.split(',').map(s => s.trim()).filter(Boolean) : []
+        })
+        .eq('id', data.user.id);
+    }
+
+    // Auto-login
+    const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({ email, password });
+    if (loginError) {
+      window.location.href = 'loginpage.html';
+      return;
+    }
+
+    // Check if admin
+    const { data: member } = await supabase
+      .from('members')
+      .select('source')
+      .eq('id', loginData.user.id)
+      .single();
+
+    if (member && member.source === 'admin') {
+      localStorage.setItem('isAdminLoggedIn', 'true');
+      window.location.href = 'admin-panel.html';
+    } else {
+      window.location.href = 'members.html'; // ✅ Redirect to members page
+    }
+  } catch (err) {
+    errorText.textContent = err.message || 'Sign up failed. Please try again.';
+    errorDiv.classList.add('show');
+    console.error('Signup error:', err);
+  }
+});
 </script>
+
 </body>
 </html>
