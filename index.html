@@ -145,29 +145,6 @@
             box-shadow: 0 8px 30px rgba(194, 24, 91, 0.2);
         }
 
-        .btn-outline-gold {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 24px;
-            background: transparent;
-            color: var(--secondary);
-            border: 2px solid var(--secondary);
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 600;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-        }
-
-        .btn-outline-gold:hover {
-            background: var(--secondary);
-            color: var(--white);
-            transform: translateY(-2px);
-        }
-
         /* ===== NAVIGATION ===== */
         .navbar {
             position: fixed;
@@ -267,6 +244,25 @@
         .navbar .nav-links .btn-nav-outline:hover {
             background: var(--primary);
             color: white;
+        }
+
+        /* ===== HAMBURGER ===== */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 2.5px;
+            background: var(--dark);
+            border-radius: 4px;
+            transition: var(--transition);
         }
 
         /* ===== HERO ===== */
@@ -476,25 +472,6 @@
             font-size: 12px;
             color: #4CAF50;
             font-weight: 600;
-        }
-
-        /* ===== HAMBURGER ===== */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 4px;
-        }
-
-        .hamburger span {
-            width: 28px;
-            height: 2.5px;
-            background: var(--dark);
-            border-radius: 4px;
-            transition: var(--transition);
         }
 
         /* ===== RESPONSIVE ===== */
