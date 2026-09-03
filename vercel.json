@@ -9,6 +9,18 @@
       "destination": "/admin-login.html"
     },
     {
+      "source": "/members.html",
+      "destination": "/members.html"
+    },
+    {
+      "source": "/signup.html",
+      "destination": "/signup.html"
+    },
+    {
+      "source": "/loginpage.html",
+      "destination": "/loginpage.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
