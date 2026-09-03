@@ -147,30 +147,47 @@
         }
         .match-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-lg); border-color:var(--primary-light); }
         .match-card .card-image {
-            position:relative; height:220px; background:linear-gradient(135deg,var(--primary-light),var(--secondary-light));
+            position:relative; height:240px; background:linear-gradient(135deg,var(--primary-light),var(--secondary-light));
             display:flex; align-items:center; justify-content:center; overflow:hidden;
+        }
+        .match-card .card-image .member-photo {
+            width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0;
         }
         .match-card .card-image .avatar-big {
             width:90px; height:90px; border-radius:50%; display:flex; align-items:center; justify-content:center;
             font-size:32px; font-weight:700; color:var(--white); border:4px solid var(--white);
-            box-shadow:0 4px 20px rgba(0,0,0,0.1);
+            box-shadow:0 4px 20px rgba(0,0,0,0.1); z-index:2; position:relative;
+        }
+        .match-card .card-image .photo-overlay {
+            position:absolute; bottom:0; left:0; right:0; padding:8px 14px;
+            background:linear-gradient(transparent, rgba(0,0,0,0.3));
+            display:flex; justify-content:flex-end; z-index:3;
+        }
+        .match-card .card-image .photo-overlay .upload-btn {
+            background:rgba(255,255,255,0.9); border:none; border-radius:50px;
+            padding:4px 14px; font-size:11px; font-weight:600; color:var(--primary);
+            cursor:pointer; transition:var(--transition);
+            display:flex; align-items:center; gap:4px;
+        }
+        .match-card .card-image .photo-overlay .upload-btn:hover {
+            background:var(--white); transform:scale(1.05);
         }
         .match-card .card-image .badge-match {
-            position:absolute; top:14px; right:14px;
+            position:absolute; top:14px; right:14px; z-index:5;
             background:var(--secondary-gradient); color:var(--white); padding:4px 14px;
             border-radius:50px; font-size:12px; font-weight:700; box-shadow:0 4px 16px rgba(212,165,74,0.3);
         }
         .match-card .card-image .badge-verified {
-            position:absolute; bottom:14px; left:14px; background:rgba(255,255,255,0.92);
-            backdrop-filter:blur(10px); padding:4px 12px; border-radius:50px; font-size:11px;
-            font-weight:600; color:#4CAF50; display:flex; align-items:center; gap:4px;
-            box-shadow:var(--shadow-sm);
+            position:absolute; bottom:14px; left:14px; z-index:5;
+            background:rgba(255,255,255,0.92); backdrop-filter:blur(10px); padding:4px 12px;
+            border-radius:50px; font-size:11px; font-weight:600; color:#4CAF50;
+            display:flex; align-items:center; gap:4px; box-shadow:var(--shadow-sm);
         }
         .match-card .card-image .badge-verified i { font-size:12px; }
         .match-card .card-image .badge-online {
-            position:absolute; bottom:14px; right:14px; width:14px; height:14px;
-            border-radius:50%; background:#4CAF50; border:2px solid var(--white);
-            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+            position:absolute; bottom:14px; right:14px; z-index:5;
+            width:14px; height:14px; border-radius:50%; background:#4CAF50;
+            border:2px solid var(--white); box-shadow:0 2px 8px rgba(0,0,0,0.1);
         }
         .match-card .card-body { padding:20px 20px 16px; }
         .match-card .card-body .name-age { display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; }
@@ -208,6 +225,40 @@
         .empty-state h3 { font-size:22px; font-weight:700; margin-bottom:8px; }
         .empty-state p { color:var(--text-light); max-width:400px; margin:0 auto 20px; }
 
+        /* Photo Upload Modal */
+        .modal-overlay {
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.5); backdrop-filter:blur(4px);
+            z-index:2000; display:none; align-items:center; justify-content:center;
+            padding:20px;
+        }
+        .modal-overlay.open { display:flex; }
+        .modal-content {
+            background:var(--white); border-radius:var(--radius);
+            max-width:450px; width:100%; padding:32px;
+            max-height:90vh; overflow-y:auto;
+        }
+        .modal-content h2 { font-size:22px; font-weight:800; color:var(--dark); margin-bottom:8px; }
+        .modal-content h2 .highlight { color:var(--primary); }
+        .modal-content p { color:var(--text-light); font-size:14px; margin-bottom:20px; }
+        .modal-content .close-modal {
+            float:right; background:none; border:none; font-size:24px; cursor:pointer; color:var(--text-lighter);
+        }
+        .modal-content .close-modal:hover { color:var(--text); }
+        .modal-content .form-group { margin-bottom:16px; }
+        .modal-content .form-group label { display:block; font-size:13px; font-weight:600; color:var(--text); margin-bottom:4px; }
+        .modal-content .form-group input[type="file"] {
+            width:100%; padding:10px; border:2px dashed rgba(0,0,0,0.1); border-radius:10px;
+            background:var(--off-white); cursor:pointer;
+        }
+        .modal-content .form-group input[type="file"]:hover { border-color:var(--primary); }
+        .modal-content .photo-preview {
+            width:100%; height:200px; border-radius:10px; object-fit:cover;
+            display:none; margin-top:8px; border:1px solid rgba(0,0,0,0.06);
+        }
+        .modal-content .modal-actions { display:flex; gap:10px; margin-top:20px; }
+        .modal-content .modal-actions .btn { flex:1; justify-content:center; }
+
         @media (max-width:1024px) { .matches-grid { grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); } }
         @media (max-width:768px) {
             .nav-links { display:none; flex-direction:column; position:absolute; top:100%; left:0; width:100%; background:var(--white); padding:24px; box-shadow:0 20px 40px rgba(0,0,0,0.1); gap:14px; border-radius:0 0 var(--radius) var(--radius); }
@@ -239,22 +290,11 @@
             .match-card .card-body .actions-row .primary-actions { justify-content:center; }
             .match-card .card-body .actions-row .action-buttons { justify-content:center; }
             .filter-container select { font-size:12px; padding:6px 12px; }
+            .modal-content { padding:24px 20px; }
         }
 
         @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
         .match-card { animation:fadeInUp 0.5s ease forwards; }
-        .match-card:nth-child(1) { animation-delay:0.05s; }
-        .match-card:nth-child(2) { animation-delay:0.10s; }
-        .match-card:nth-child(3) { animation-delay:0.15s; }
-        .match-card:nth-child(4) { animation-delay:0.20s; }
-        .match-card:nth-child(5) { animation-delay:0.25s; }
-        .match-card:nth-child(6) { animation-delay:0.30s; }
-        .match-card:nth-child(7) { animation-delay:0.35s; }
-        .match-card:nth-child(8) { animation-delay:0.40s; }
-        .match-card:nth-child(9) { animation-delay:0.45s; }
-        .match-card:nth-child(10) { animation-delay:0.50s; }
-        .match-card:nth-child(11) { animation-delay:0.55s; }
-        .match-card:nth-child(12) { animation-delay:0.60s; }
     </style>
 </head>
 <body>
@@ -311,6 +351,27 @@
         </div>
     </section>
 
+    <!-- Photo Upload Modal -->
+    <div class="modal-overlay" id="photoModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModalBtn">&times;</button>
+            <h2>Upload <span class="highlight">Photo</span></h2>
+            <p id="modalMemberName">Upload a profile photo for this member.</p>
+            <form id="photoForm">
+                <input type="hidden" id="photoMemberId" />
+                <div class="form-group">
+                    <label>Select Photo</label>
+                    <input type="file" id="photoInput" accept="image/*" />
+                    <img class="photo-preview" id="photoPreview" />
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelModalBtn" style="flex:1;padding:10px 20px;border-radius:50px;border:1px solid #ddd;background:#fff;cursor:pointer;">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="flex:1;padding:10px 20px;border-radius:50px;border:none;background:var(--primary-gradient);color:#fff;cursor:pointer;">Upload Photo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -334,6 +395,15 @@
             const genderFilter = document.getElementById('genderFilter');
             const statusFilter = document.getElementById('statusFilter');
 
+            // Modal elements
+            const photoModal = document.getElementById('photoModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const cancelModalBtn = document.getElementById('cancelModalBtn');
+            const photoInput = document.getElementById('photoInput');
+            const photoPreview = document.getElementById('photoPreview');
+            const photoMemberId = document.getElementById('photoMemberId');
+            const modalMemberName = document.getElementById('modalMemberName');
+
             function escapeHtml(text) {
                 if (!text) return '—';
                 var div = document.createElement('div');
@@ -345,21 +415,132 @@
                 return Math.floor(Math.random() * 38) + 62;
             }
 
+            // Storage bucket for member photos
+            async function initStorage() {
+                try {
+                    const { data, error } = await supabase.storage.createBucket('member-photos', {
+                        public: true,
+                        fileSizeLimit: 5242880 // 5MB
+                    });
+                    if (error && error.message.includes('already exists')) {
+                        console.log('Bucket already exists');
+                    } else if (error) {
+                        console.error('Error creating bucket:', error);
+                    } else {
+                        console.log('Bucket created successfully');
+                    }
+                } catch (e) {
+                    console.log('Bucket setup:', e);
+                }
+            }
+            initStorage();
+
+            // Upload photo function
+            async function uploadPhoto(memberId, file) {
+                try {
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${memberId}.${fileExt}`;
+                    const filePath = `public/${fileName}`;
+
+                    const { error: uploadError } = await supabase.storage
+                        .from('member-photos')
+                        .upload(filePath, file, { upsert: true });
+
+                    if (uploadError) throw uploadError;
+
+                    const { data: urlData } = supabase.storage
+                        .from('member-photos')
+                        .getPublicUrl(filePath);
+
+                    // Update member with photo URL
+                    const { error: updateError } = await supabase
+                        .from('members')
+                        .update({ photo_url: urlData.publicUrl })
+                        .eq('id', memberId);
+
+                    if (updateError) throw updateError;
+
+                    return urlData.publicUrl;
+                } catch (err) {
+                    console.error('Upload error:', err);
+                    throw err;
+                }
+            }
+
+            // Open modal
+            function openPhotoModal(memberId, memberName) {
+                photoMemberId.value = memberId;
+                modalMemberName.textContent = `Upload a profile photo for ${memberName}.`;
+                photoPreview.style.display = 'none';
+                photoInput.value = '';
+                photoModal.classList.add('open');
+            }
+
+            // Close modal
+            function closePhotoModal() {
+                photoModal.classList.remove('open');
+                photoInput.value = '';
+                photoPreview.style.display = 'none';
+            }
+
+            // Photo preview
+            photoInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        photoPreview.src = e.target.result;
+                        photoPreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Modal events
+            closeModalBtn.addEventListener('click', closePhotoModal);
+            cancelModalBtn.addEventListener('click', closePhotoModal);
+            photoModal.addEventListener('click', function(e) {
+                if (e.target === photoModal) closePhotoModal();
+            });
+
+            // Photo form submit
+            document.getElementById('photoForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const memberId = photoMemberId.value;
+                const file = photoInput.files[0];
+
+                if (!file) {
+                    alert('Please select a photo.');
+                    return;
+                }
+
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File is too large. Maximum size is 5MB.');
+                    return;
+                }
+
+                try {
+                    const photoUrl = await uploadPhoto(memberId, file);
+                    alert('Photo uploaded successfully!');
+                    closePhotoModal();
+                    loadMembers(); // Refresh the grid
+                } catch (err) {
+                    alert('Upload failed: ' + err.message);
+                }
+            });
+
+            // Load members
             async function loadMembers() {
                 try {
-                    // Build query
                     let query = supabase
                         .from('members')
                         .select('*')
                         .order('created_at', { ascending: false });
 
-                    // Apply status filter
                     var statusValue = statusFilter.value;
                     if (statusValue !== 'all') {
                         query = query.eq('status', statusValue);
                     }
 
-                    // Apply gender filter
                     var genderValue = genderFilter.value;
                     if (genderValue !== 'all') {
                         query = query.eq('gender', genderValue);
@@ -402,13 +583,29 @@
                         var statusBadge = member.status === 'active' ? '🟢 Active' : '🟡 Pending';
                         var lookingIcon = member.looking_for === 'Men' ? '♂️' : member.looking_for === 'Women' ? '♀️' :
                             '🌍';
+                        var photoHtml = '';
+
+                        if (member.photo_url) {
+                            photoHtml =
+                                '<img src="' + member.photo_url + '" class="member-photo" alt="' + escapeHtml(member
+                                .name) + '" />';
+                            photoHtml +=
+                                '<div class="avatar-big" style="background:' + color + ';border:4px solid rgba(255,255,255,0.9);">' +
+                                initials + '</div>';
+                        } else {
+                            photoHtml = '<div class="avatar-big" style="background:' + color + ';">' + initials +
+                                '</div>';
+                        }
 
                         html += '<div class="match-card">';
                         html += '<div class="card-image">';
-                        html += '<div class="avatar-big" style="background:' + color + ';">' + initials + '</div>';
+                        html += photoHtml;
                         html += '<span class="badge-match">' + matchPercent + '% Match</span>';
                         html += '<span class="badge-verified"><i class="fas fa-check-circle"></i> Verified</span>';
                         html += '<span class="badge-online"></span>';
+                        html +=
+                            '<div class="photo-overlay"><button class="upload-btn" onclick="openPhotoModal(\'' + member
+                            .id + '\', \'' + escapeHtml(member.name) + '\')"><i class="fas fa-camera"></i> Add Photo</button></div>';
                         html += '</div>';
                         html += '<div class="card-body">';
                         html += '<div class="name-age"><h4>' + escapeHtml(member.name) + '</h4><span class="age">' + age +
@@ -454,6 +651,9 @@
                         (err.message || 'Please try again later.') + '</p></div>';
                 }
             }
+
+            // Expose openPhotoModal globally
+            window.openPhotoModal = openPhotoModal;
 
             // Event listeners for filters
             genderFilter.addEventListener('change', loadMembers);
